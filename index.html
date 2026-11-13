@@ -30,13 +30,14 @@
   <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon.png">
   <meta name="theme-color" content="#193765">
 
+  <!-- Preload de Ativos Críticos Acima da Dobra (LCP) -->
+  <link rel="preload" as="image" href="assets/videos/hero-video-poster.webp" type="image/webp" fetchpriority="high">
+
   <!-- Preload de Fontes Críticas -->
+  <link rel="preload" href="assets/fonts/fraunces-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/lora-500-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/manrope-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/manrope-600-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Instrument+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap">
 
   <!-- Folhas de Estilo -->
   <link rel="stylesheet" href="assets/css/fonts.css">
@@ -1398,17 +1399,17 @@
   </div>
 
   <!-- JavaScript Libraries & Controllers -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="assets/js/hero-motion.js"></script>
-  <script src="assets/js/servicos-motion.js"></script>
-  <script src="assets/js/galeria-motion.js"></script>
-  <script src="assets/js/passos-motion.js"></script>
-  <script src="assets/js/relatos-motion.js"></script>
-  <script src="assets/js/duvidas-motion.js"></script>
-  <script src="assets/js/nav-motion.js"></script>
-  <script src="assets/js/footer-motion.js"></script>
-  <script src="assets/js/main.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="assets/js/hero-motion.js" defer></script>
+  <script src="assets/js/servicos-motion.js" defer></script>
+  <script src="assets/js/galeria-motion.js" defer></script>
+  <script src="assets/js/passos-motion.js" defer></script>
+  <script src="assets/js/relatos-motion.js" defer></script>
+  <script src="assets/js/duvidas-motion.js" defer></script>
+  <script src="assets/js/nav-motion.js" defer></script>
+  <script src="assets/js/footer-motion.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
 </body>
 </html>
 

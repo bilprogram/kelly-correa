@@ -341,7 +341,7 @@ p:last-child {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(247, 244, 238, 0.65) !important;
+  color: rgba(247, 244, 238, 0.80) !important;
   line-height: 1.1;
   white-space: nowrap;
 }

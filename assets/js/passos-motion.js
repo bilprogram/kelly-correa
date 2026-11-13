@@ -362,13 +362,12 @@ const PASSOS_MOTION_CONFIG = {
     }
 
     // P-07: Recalcula geometria de traçado com ScrollTrigger.refresh debounced
-    let refreshRaf = null;
     const debouncedRefresh = () => {
       if (typeof ScrollTrigger === 'undefined') return;
-      if (refreshRaf) cancelAnimationFrame(refreshRaf);
-      refreshRaf = requestAnimationFrame(() => {
+      if (window._stRefreshRaf) cancelAnimationFrame(window._stRefreshRaf);
+      window._stRefreshRaf = requestAnimationFrame(() => {
         ScrollTrigger.refresh();
-        refreshRaf = null;
+        window._stRefreshRaf = null;
       });
     };
 

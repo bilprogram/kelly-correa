@@ -311,16 +311,21 @@ const RELATOS_MOTION_CONFIG = {
 
     // Refresh em redimensionamento e fontes carregadas
     const handleRefresh = () => {
-      ScrollTrigger.refresh();
+      if (typeof ScrollTrigger === 'undefined') return;
+      if (window._stRefreshRaf) cancelAnimationFrame(window._stRefreshRaf);
+      window._stRefreshRaf = requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+        window._stRefreshRaf = null;
+      });
     };
 
-    window.addEventListener('resize', handleRefresh);
+    window.addEventListener('resize', handleRefresh, { passive: true });
 
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(handleRefresh);
     }
 
-    window.addEventListener('load', handleRefresh);
+    window.addEventListener('load', handleRefresh, { passive: true });
   }
 
   if (document.readyState === 'loading') {

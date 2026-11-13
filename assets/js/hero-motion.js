@@ -757,14 +757,19 @@ const MOTION_CONFIG = {
       }, { passive: true });
 
       // Refresh no load e após fonts ready para cálculos precisos de pinning e scroll
-      window.addEventListener('load', () => {
-        if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
-      }, { passive: true });
+      const debouncedHeroRefresh = () => {
+        if (typeof ScrollTrigger === 'undefined') return;
+        if (window._stRefreshRaf) cancelAnimationFrame(window._stRefreshRaf);
+        window._stRefreshRaf = requestAnimationFrame(() => {
+          ScrollTrigger.refresh();
+          window._stRefreshRaf = null;
+        });
+      };
+
+      window.addEventListener('load', debouncedHeroRefresh, { passive: true });
 
       if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(() => {
-          if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
-        });
+        document.fonts.ready.then(debouncedHeroRefresh);
       }
     });
   }

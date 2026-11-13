@@ -212,8 +212,12 @@ const FOOTER_MOTION_CONFIG = {
       // Efeito Magnético no Botão de CTA Desktop
       const ctaBtn = ctaSection.querySelector('.btn-cta-final');
       if (isFinePointer && ctaBtn) {
+        let rect = null;
+        ctaBtn.addEventListener('mouseenter', () => {
+          rect = ctaBtn.getBoundingClientRect();
+        });
         ctaBtn.addEventListener('mousemove', (e) => {
-          const rect = ctaBtn.getBoundingClientRect();
+          if (!rect) rect = ctaBtn.getBoundingClientRect();
           const dx = e.clientX - (rect.left + rect.width / 2);
           const dy = e.clientY - (rect.top + rect.height / 2);
           gsap.to(ctaBtn, {
@@ -225,6 +229,7 @@ const FOOTER_MOTION_CONFIG = {
         });
 
         ctaBtn.addEventListener('mouseleave', () => {
+          rect = null;
           gsap.to(ctaBtn, { x: 0, y: 0, duration: 0.6, ease: cfg.easings.soft });
         });
       }
@@ -329,13 +334,12 @@ const FOOTER_MOTION_CONFIG = {
   }
 
   // P-07: Recalibra ScrollTrigger de forma debounced após fontes e carregamento completo
-  let footerRefreshRaf = null;
   const debouncedFooterRefresh = () => {
     if (typeof ScrollTrigger === 'undefined') return;
-    if (footerRefreshRaf) cancelAnimationFrame(footerRefreshRaf);
-    footerRefreshRaf = requestAnimationFrame(() => {
+    if (window._stRefreshRaf) cancelAnimationFrame(window._stRefreshRaf);
+    window._stRefreshRaf = requestAnimationFrame(() => {
       ScrollTrigger.refresh();
-      footerRefreshRaf = null;
+      window._stRefreshRaf = null;
     });
   };
 

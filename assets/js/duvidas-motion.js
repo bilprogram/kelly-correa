@@ -197,13 +197,12 @@ const DUVIDAS_MOTION_CONFIG = {
     }
 
     // P-07: Refresh debounced para evitar recálculos em cascata
-    let refreshRaf = null;
     function debouncedRefresh() {
       if (typeof ScrollTrigger === 'undefined') return;
-      if (refreshRaf) cancelAnimationFrame(refreshRaf);
-      refreshRaf = requestAnimationFrame(() => {
+      if (window._stRefreshRaf) cancelAnimationFrame(window._stRefreshRaf);
+      window._stRefreshRaf = requestAnimationFrame(() => {
         ScrollTrigger.refresh();
-        refreshRaf = null;
+        window._stRefreshRaf = null;
       });
     }
 

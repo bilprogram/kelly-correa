@@ -577,15 +577,20 @@ const GALERIA_MOTION_CONFIG = {
     });
 
     // Recalibra ScrollTrigger após carregamento de fontes e imagens
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => {
+    const debouncedGaleriaRefresh = () => {
+      if (typeof ScrollTrigger === 'undefined') return;
+      if (window._stRefreshRaf) cancelAnimationFrame(window._stRefreshRaf);
+      window._stRefreshRaf = requestAnimationFrame(() => {
         ScrollTrigger.refresh();
+        window._stRefreshRaf = null;
       });
+    };
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(debouncedGaleriaRefresh);
     }
 
-    window.addEventListener('load', () => {
-      ScrollTrigger.refresh();
-    });
+    window.addEventListener('load', debouncedGaleriaRefresh);
   }
 
   // Inicialização no DOMContentLoaded
