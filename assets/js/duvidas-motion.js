@@ -103,13 +103,28 @@ const DUVIDAS_MOTION_CONFIG = {
     // =========================================================================
     // STEP 6 — ENTRANCE MOTION (Left Sticky Column Reveal)
     // =========================================================================
+    const headingElements = [
+      '.duvidas__eyebrow-line',
+      '.duvidas__eyebrow',
+      '.duvidas__headline .duvidas__line-inner',
+      '.duvidas__em',
+      '.duvidas__lead',
+      '.duvidas__link'
+    ];
+
     const headingTl = gsap.timeline({
       scrollTrigger: {
         id: 'duvidas-heading',
         trigger: duvidasSection,
         start: 'top 75%',
         once: true,
-        onStart: () => { duvidasAnimated = true; }
+        onStart: () => { 
+          duvidasAnimated = true; 
+          gsap.set(headingElements, { willChange: 'transform,opacity,filter' });
+        }
+      },
+      onComplete: () => {
+        gsap.set(headingElements, { clearProps: 'willChange' });
       }
     });
 

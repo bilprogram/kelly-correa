@@ -381,8 +381,11 @@ const MOTION_CONFIG = {
         marqueeTween = gsap.to(faixaTrack, { xPercent: -50, ease: "none", duration: duration, repeat: -1 });
 
         if (typeof ScrollTrigger !== 'undefined') {
+          let isFaixaVisible = false;
+
           ScrollTrigger.create({
             onUpdate: (self) => {
+              if (!isFaixaVisible) return;
               const velocity = self.getVelocity();
               const maxBoost = isMobile ? 0.2 : cfg.marquee.maxVelocityScale;
               const boostDivisor = isMobile ? 1200 : 400;
@@ -401,11 +404,14 @@ const MOTION_CONFIG = {
           if ('IntersectionObserver' in window && faixaSection) {
             const observer = new IntersectionObserver((entries) => {
               entries.forEach((entry) => {
+                isFaixaVisible = entry.isIntersecting;
                 if (entry.isIntersecting) marqueeTween.play();
                 else marqueeTween.pause();
               });
             }, { threshold: 0.05 });
             observer.observe(faixaSection);
+          } else {
+            isFaixaVisible = true;
           }
         }
 
@@ -451,7 +457,7 @@ const MOTION_CONFIG = {
             trigger: secondFold,
             start: "top bottom",
             end: "top top",
-            scrub: cfg.curtain.scrubSpeed,
+            scrub: isDesktop ? 0.25 : cfg.curtain.scrubSpeed,
             // Estado derivado continuamente do progresso da rolagem para eliminar glitches em scroll rápido
             onUpdate: (self) => {
               updateHeroVisibility(self.progress);
@@ -473,7 +479,7 @@ const MOTION_CONFIG = {
         window.addEventListener('scroll', () => {
           if (window.scrollY <= 5) {
             heroSection.style.visibility = 'visible';
-            if (curtainTl && curtainTl.scrollTrigger && curtainTl.scrollTrigger.progress <= 0.05) {
+            if (curtainTl) {
               curtainTl.progress(0);
               gsap.set('.hero__block', { opacity: 1, yPercent: 0, clearProps: 'opacity,transform' });
               gsap.set('.hero__curtain-overlay', { opacity: 0, clearProps: 'opacity' });
@@ -614,13 +620,30 @@ const MOTION_CONFIG = {
       const textCol = document.querySelector('.second-fold__col-text');
 
       if (textCol && typeof ScrollTrigger !== 'undefined') {
+        const sobreAnimatedEls = [
+          '.sobre__eyebrow',
+          '.sobre__headline .line-inner',
+          '.sobre__em',
+          '.sobre__lead',
+          '.sobre__micro-divider',
+          '.sobre__micro-content',
+          '.sobre__quote',
+          '.sobre__quote-mark',
+          '.sobre__cta-link',
+          '.sobre__cta-underline'
+        ];
+
         const sobreTl = gsap.timeline({
           scrollTrigger: {
             trigger: textCol,
             start: "top 75%",
             once: true,
+            onStart: () => {
+              gsap.set(sobreAnimatedEls, { willChange: 'transform,opacity,filter' });
+            },
             onComplete: () => {
               secondFoldAnimated = true;
+              gsap.set(sobreAnimatedEls, { clearProps: 'willChange' });
             }
           }
         });
@@ -745,28 +768,45 @@ const MOTION_CONFIG = {
           const xTo = gsap.quickTo(el, 'x', { duration: cfg.magnetic.quickToDuration, ease: "power3.out" });
           const yTo = gsap.quickTo(el, 'y', { duration: cfg.magnetic.quickToDuration, ease: "power3.out" });
 
+          let cachedRect = null;
+          let isNear = false;
+          const updateRect = () => { cachedRect = el.getBoundingClientRect(); };
+
           const onPointerMove = (e) => {
-            const rect = el.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
+            if (!cachedRect) updateRect();
+            const centerX = cachedRect.left + cachedRect.width / 2;
+            const centerY = cachedRect.top + cachedRect.height / 2;
             const dx = e.clientX - centerX;
             const dy = e.clientY - centerY;
-            const dist = Math.hypot(dx, dy);
-            const maxInfluence = cfg.magnetic.proximityRadius + rect.width / 2;
+            const maxInfluence = cfg.magnetic.proximityRadius + cachedRect.width / 2;
 
+            if (Math.abs(dx) > maxInfluence || Math.abs(dy) > maxInfluence) {
+              if (isNear) {
+                isNear = false;
+                xTo(0);
+                yTo(0);
+              }
+              return;
+            }
+
+            const dist = Math.hypot(dx, dy);
             if (dist < maxInfluence) {
+              isNear = true;
               const factor = 1 - (dist / maxInfluence);
               const intensity = Math.min(cfg.magnetic.maxTranslation, cfg.magnetic.maxTranslation * factor);
               const angle = Math.atan2(dy, dx);
               xTo(Math.cos(angle) * intensity);
               yTo(Math.sin(angle) * intensity);
-            } else {
+            } else if (isNear) {
+              isNear = false;
               xTo(0);
               yTo(0);
             }
           };
 
-          const onPointerLeave = () => { xTo(0); yTo(0); };
+          const onPointerLeave = () => { isNear = false; cachedRect = null; xTo(0); yTo(0); };
+          window.addEventListener('scroll', () => { cachedRect = null; }, { passive: true });
+          window.addEventListener('resize', () => { cachedRect = null; }, { passive: true });
           window.addEventListener('pointermove', onPointerMove, { passive: true });
           el.addEventListener('pointerleave', onPointerLeave);
         };

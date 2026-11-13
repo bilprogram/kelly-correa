@@ -114,13 +114,27 @@ const PASSOS_MOTION_CONFIG = {
     // =========================================================================
     // STEP 6 — HEADING ENTRANCE (Left Aligned, Eyebrow Line, H2 Mask & Lead)
     // =========================================================================
+    const headingElements = [
+      '.passos__eyebrow-line',
+      '.passos__eyebrow',
+      '.passos__headline .passos__line-inner',
+      '.passos__em',
+      '.passos__lead'
+    ];
+
     const headingTl = gsap.timeline({
       scrollTrigger: {
         id: 'passos-heading',
         trigger: passosSection,
         start: 'top 75%',
         once: true,
-        onStart: () => { passosAnimated = true; }
+        onStart: () => { 
+          passosAnimated = true; 
+          gsap.set(headingElements, { willChange: 'transform,opacity,filter' });
+        }
+      },
+      onComplete: () => {
+        gsap.set(headingElements, { clearProps: 'willChange' });
       }
     });
 
@@ -278,6 +292,8 @@ const PASSOS_MOTION_CONFIG = {
         }
       }
 
+      const isDesktop = window.matchMedia('(min-width: 769px)').matches;
+
       // Linha desenha com o scroll (stroke-dashoffset scrubbed)
       if (timelinePath && timelineWrap) {
         gsap.fromTo(timelinePath, 
@@ -290,7 +306,7 @@ const PASSOS_MOTION_CONFIG = {
               trigger: timelineWrap,
               start: 'top 70%',
               end: 'bottom 60%',
-              scrub: 0.8,
+              scrub: isDesktop ? 0.3 : 0.8,
               onUpdate: (self) => {
                 const p = self.progress;
                 setStepActive(0, p >= 0.08);
@@ -308,12 +324,22 @@ const PASSOS_MOTION_CONFIG = {
         once: true,
         onEnter: (batch) => {
           batch.forEach((card, idx) => {
-            const tl = gsap.timeline();
+            const cardContent = card.querySelectorAll('.passos__card-content > *');
+            const tl = gsap.timeline({
+              onStart: () => {
+                gsap.set(card, { willChange: 'clip-path' });
+                if (cardContent.length > 0) gsap.set(cardContent, { willChange: 'transform,opacity,filter' });
+              },
+              onComplete: () => {
+                gsap.set(card, { clearProps: 'willChange' });
+                if (cardContent.length > 0) gsap.set(cardContent, { clearProps: 'willChange' });
+              }
+            });
             tl.fromTo(card, 
               { clipPath: 'inset(0 0 100% 0 round 28px)' }, 
               { clipPath: 'inset(0 0 0% 0 round 28px)', duration: cfg.timings.cardCurtain, ease: cfg.easings.mask, delay: idx * 0.12 }
             )
-            .fromTo(card.querySelectorAll('.passos__card-content > *'), 
+            .fromTo(cardContent, 
               { y: 24, filter: 'blur(6px)', opacity: 0 }, 
               { y: 0, filter: 'blur(0px)', opacity: 1, duration: 0.9, stagger: cfg.timings.cardContentStagger, ease: cfg.easings.soft }, 
               '-=0.8'

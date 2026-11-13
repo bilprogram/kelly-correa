@@ -128,13 +128,29 @@ const RELATOS_MOTION_CONFIG = {
     // =========================================================================
     // STEP 6 — HEADING ENTRANCE (Left Aligned, Eyebrow Line, H2 Mask & Lead)
     // =========================================================================
+    const headingElements = [
+      '.relatos__eyebrow-line',
+      '.relatos__eyebrow',
+      '.relatos__headline .relatos__line-inner',
+      '.relatos__em',
+      '.relatos__lead',
+      divider,
+      ethicalNote
+    ];
+
     const headingTl = gsap.timeline({
       scrollTrigger: {
         id: 'relatos-heading',
         trigger: relatosSection,
         start: 'top 75%',
         once: true,
-        onStart: () => { relatosAnimated = true; }
+        onStart: () => { 
+          relatosAnimated = true; 
+          gsap.set(headingElements, { willChange: 'transform,opacity,filter' });
+        }
+      },
+      onComplete: () => {
+        gsap.set(headingElements, { clearProps: 'willChange' });
       }
     });
 
@@ -235,6 +251,8 @@ const RELATOS_MOTION_CONFIG = {
 
     // 2. SCROLL MOTION (No preference)
     mm.add('(prefers-reduced-motion: no-preference)', () => {
+      const isDesktop = window.matchMedia('(min-width: 769px)').matches;
+
       // Step 4: Word-by-word fill no relato em destaque (data-preenche)
       if (featuredWords.length > 0 && featuredQuote) {
         gsap.to(featuredWords, {
@@ -245,7 +263,7 @@ const RELATOS_MOTION_CONFIG = {
             trigger: featuredQuote,
             start: 'top 75%',
             end: 'bottom 55%',
-            scrub: 0.6
+            scrub: isDesktop ? 0.2 : 0.6
           }
         });
 
@@ -274,12 +292,22 @@ const RELATOS_MOTION_CONFIG = {
           once: true,
           onEnter: (batch) => {
             batch.forEach((card, idx) => {
-              const tl = gsap.timeline();
+              const cardContent = card.querySelectorAll('.relatos__card-content > *');
+              const tl = gsap.timeline({
+                onStart: () => {
+                  gsap.set(card, { willChange: 'clip-path' });
+                  if (cardContent.length > 0) gsap.set(cardContent, { willChange: 'transform,opacity,filter' });
+                },
+                onComplete: () => {
+                  gsap.set(card, { clearProps: 'willChange' });
+                  if (cardContent.length > 0) gsap.set(cardContent, { clearProps: 'willChange' });
+                }
+              });
               tl.fromTo(card, 
                 { clipPath: 'inset(0 0 100% 0 round 28px)' }, 
                 { clipPath: 'inset(0 0 0% 0 round 28px)', duration: cfg.timings.cardCurtain, ease: cfg.easings.mask, delay: idx * cfg.timings.cardStagger }
               )
-              .fromTo(card.querySelectorAll('.relatos__card-content > *'), 
+              .fromTo(cardContent, 
                 { y: 20, filter: 'blur(6px)', opacity: 0 }, 
                 { y: 0, filter: 'blur(0px)', opacity: 1, duration: cfg.timings.cardContentFade, stagger: 0.08, ease: cfg.easings.soft }, 
                 '-=0.8'

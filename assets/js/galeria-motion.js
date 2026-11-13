@@ -118,7 +118,13 @@ const GALERIA_MOTION_CONFIG = {
         trigger: galeriaSection,
         start: 'top 75%',
         once: true,
-        onStart: () => { galeriaAnimated = true; }
+        onStart: () => { 
+          galeriaAnimated = true; 
+          gsap.set(['.galeria__eyebrow-line', '.galeria__eyebrow', '.galeria__headline .galeria__line-inner', '.galeria__em', '.galeria__intro'], { willChange: 'transform,opacity,filter' });
+        }
+      },
+      onComplete: () => {
+        gsap.set(['.galeria__eyebrow-line', '.galeria__eyebrow', '.galeria__headline .galeria__line-inner', '.galeria__em', '.galeria__intro'], { clearProps: 'willChange' });
       }
     });
 
@@ -198,7 +204,7 @@ const GALERIA_MOTION_CONFIG = {
           anticipatePin: 1,
           start: 'top top',
           end: () => `+=${getScrollDistance()}`,
-          scrub: 0.8,
+          scrub: 0.25,
           invalidateOnRefresh: true,
           onRefresh: updateCachedMetrics,
           onUpdate: (self) => {
@@ -223,7 +229,10 @@ const GALERIA_MOTION_CONFIG = {
 
               if (cached.frame) {
                 cached.frame.style.transform = `scale(${scale.toFixed(4)})`;
-                cached.frame.style.filter = `saturate(${saturate.toFixed(4)})`;
+                if (cached.lastSaturate === undefined || Math.abs(saturate - cached.lastSaturate) >= 0.015) {
+                  cached.lastSaturate = saturate;
+                  cached.frame.style.filter = `saturate(${saturate.toFixed(4)})`;
+                }
               }
             });
           }
@@ -387,6 +396,8 @@ const GALERIA_MOTION_CONFIG = {
       let cursorX = -200;
       let cursorY = -200;
       let isOverPhoto = false;
+      let isGaleriaVisible = false;
+      let rafId = null;
 
       window.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
@@ -394,13 +405,32 @@ const GALERIA_MOTION_CONFIG = {
       }, { passive: true });
 
       function renderCursor() {
-        cursorX += (mouseX - cursorX) * cfg.cursor.lerp;
-        cursorY += (mouseY - cursorY) * cfg.cursor.lerp;
+        if (!isGaleriaVisible) {
+          rafId = null;
+          return;
+        }
+        const currentLerp = isOverPhoto ? 0.35 : cfg.cursor.lerp;
+        cursorX += (mouseX - cursorX) * currentLerp;
+        cursorY += (mouseY - cursorY) * currentLerp;
 
         cursor.style.transform = `translate3d(${cursorX - cfg.cursor.size / 2}px, ${cursorY - cfg.cursor.size / 2}px, 0) scale(${isOverPhoto ? 1 : 0})`;
-        requestAnimationFrame(renderCursor);
+        rafId = requestAnimationFrame(renderCursor);
       }
-      requestAnimationFrame(renderCursor);
+
+      if ('IntersectionObserver' in window && galeriaSection) {
+        const galeriaCursorObs = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            isGaleriaVisible = entry.isIntersecting;
+            if (isGaleriaVisible && !rafId) {
+              rafId = requestAnimationFrame(renderCursor);
+            }
+          });
+        }, { threshold: 0 });
+        galeriaCursorObs.observe(galeriaSection);
+      } else {
+        isGaleriaVisible = true;
+        rafId = requestAnimationFrame(renderCursor);
+      }
 
       items.forEach((item) => {
         const frame = item.querySelector('.galeria__frame');

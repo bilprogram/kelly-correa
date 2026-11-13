@@ -147,13 +147,26 @@ const SERVICOS_MOTION_CONFIG = {
       // ----------------------------------------------------------------------
       // STEP 7: ENTRADA DO CABEÇALHO EDITORIAL & TEXTOS
       // ----------------------------------------------------------------------
+      const headerElements = [
+        '.servicos__eyebrow-line',
+        '.servicos__eyebrow',
+        '.servicos__headline .line-inner',
+        '.servicos__em',
+        '.servicos__intro',
+        '.servicos__counter'
+      ];
+
       const tlHeader = gsap.timeline({
         scrollTrigger: {
           trigger: servicosSection,
           start: "top 75%",
           once: true,
+          onStart: () => {
+            gsap.set(headerElements, { willChange: 'transform,opacity,filter' });
+          },
           onComplete: () => {
             servicosAnimated = true;
+            gsap.set(headerElements, { clearProps: 'willChange' });
           }
         }
       });
@@ -243,7 +256,15 @@ const SERVICOS_MOTION_CONFIG = {
           scrollTrigger: {
             trigger: card,
             start: "top 85%",
-            once: true
+            once: true,
+            onStart: () => {
+              gsap.set(card, { willChange: 'clip-path' });
+              if (cardInner.length > 0) gsap.set(cardInner, { willChange: 'transform,opacity,filter' });
+            },
+            onComplete: () => {
+              gsap.set(card, { clearProps: 'willChange' });
+              if (cardInner.length > 0) gsap.set(cardInner, { clearProps: 'willChange' });
+            }
           }
         });
 
@@ -290,7 +311,7 @@ const SERVICOS_MOTION_CONFIG = {
               trigger: servicosSection.querySelector('.servicos__cards-list'),
               start: "top 60%",
               end: "bottom 70%",
-              scrub: 0.8
+              scrub: 0.25
             }
           });
         }
@@ -312,7 +333,7 @@ const SERVICOS_MOTION_CONFIG = {
                 trigger: nextCard,
                 start: "top 75%",
                 end: "top 220px",
-                scrub: 0.6
+                scrub: 0.25
               }
             });
 
@@ -324,7 +345,7 @@ const SERVICOS_MOTION_CONFIG = {
                   trigger: nextCard,
                   start: "top 75%",
                   end: "top 220px",
-                  scrub: 0.6
+                  scrub: 0.25
                 }
               });
             }

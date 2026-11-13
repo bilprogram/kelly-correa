@@ -155,12 +155,27 @@ const FOOTER_MOTION_CONFIG = {
       }
 
       // Timeline de Entrada: Dispara uma vez em 'top 75%'
+      const ctaElements = [
+        '.chamada-final__eyebrow-line',
+        '.chamada-final__eyebrow',
+        '.chamada-final__title .line-inner',
+        '.chamada-final__em',
+        '.chamada-final__lead',
+        '.btn-cta-final'
+      ];
+
       const ctaTl = gsap.timeline({
         scrollTrigger: {
           trigger: ctaSection,
           start: 'top 75%',
           once: true,
+          onStart: () => {
+            gsap.set(ctaElements, { willChange: 'transform,opacity,filter,clip-path' });
+          },
           onEnter: () => { ctaAnimated = true; }
+        },
+        onComplete: () => {
+          gsap.set(ctaElements, { clearProps: 'willChange' });
         }
       });
 
@@ -240,12 +255,19 @@ const FOOTER_MOTION_CONFIG = {
     // =========================================================================
     if (footerSection) {
       // Linha divisória superior desenha da esquerda para direita
+      const footerElements = ['.rodape__divider-top', '.rodape__col-brand', '.rodape__col', '.rodape__base'];
       const footerTl = gsap.timeline({
         scrollTrigger: {
           trigger: footerSection,
           start: 'top 85%',
           once: true,
+          onStart: () => {
+            gsap.set(footerElements, { willChange: 'transform,opacity,filter' });
+          },
           onEnter: () => { footerAnimated = true; }
+        },
+        onComplete: () => {
+          gsap.set(footerElements, { clearProps: 'willChange' });
         }
       });
 

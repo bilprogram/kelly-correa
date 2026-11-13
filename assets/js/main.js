@@ -256,17 +256,22 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Botões e Elementos com Efeito Magnético ([data-magnetico], .btn, .botao, .nav-cta, .whatsapp-float)
-    const elementosMagneticos = document.querySelectorAll('[data-magnetico], .btn, .botao, .nav-cta, .whatsapp-float');
+    // Botões e Elementos com Efeito Magnético gerenciados por main.js (exclui elementos com controle dedicado GSAP)
+    const elementosMagneticos = document.querySelectorAll('[data-magnetico]:not(.hero__btn-primary):not(.sobre__cta-link):not(.nav-cta):not(.passos__btn):not(.btn-cta-final), .whatsapp-float');
     elementosMagneticos.forEach((el) => {
+      let r = null;
+      el.addEventListener('pointerenter', () => {
+        r = el.getBoundingClientRect();
+      });
       el.addEventListener('pointermove', (e) => {
-        const r = el.getBoundingClientRect();
+        if (!r) r = el.getBoundingClientRect();
         const dx = e.clientX - (r.left + r.width / 2);
         const dy = e.clientY - (r.top + r.height / 2);
         el.style.transform = `translate(${(dx * 0.22).toFixed(1)}px, ${(dy * 0.30).toFixed(1)}px)`;
       });
 
       el.addEventListener('pointerleave', () => {
+        r = null;
         el.style.transform = '';
       });
     });
