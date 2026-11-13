@@ -344,10 +344,17 @@ const GALERIA_MOTION_CONFIG = {
             opacity: 1,
             duration: 1.2,
             ease: cfg.easings.mask,
+            clearProps: 'clipPath,opacity',
             scrollTrigger: {
               trigger: item,
               start: 'top 85%',
-              once: true
+              once: true,
+              onLeaveBack: () => {
+                gsap.set(frame, { clipPath: 'none', opacity: 1, clearProps: 'clipPath,opacity' });
+              }
+            },
+            onComplete: () => {
+              gsap.set(frame, { clipPath: 'none', opacity: 1, clearProps: 'clipPath,opacity' });
             }
           }
         );

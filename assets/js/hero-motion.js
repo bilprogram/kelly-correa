@@ -91,6 +91,9 @@ const MOTION_CONFIG = {
 
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      ScrollTrigger.config({ ignoreMobileResize: true });
+    }
   }
 
   let heroTimelineStarted = false;
@@ -366,11 +369,13 @@ const MOTION_CONFIG = {
       const faixaSection = document.querySelector('.faixa');
       const faixaTrack = document.querySelector('[data-faixa-marquee]');
       if (faixaTrack) {
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
         const firstGroup = faixaTrack.querySelector('.faixa__marquee-group');
         let duration = 32;
         if (firstGroup) {
           const groupWidth = firstGroup.offsetWidth || 1800;
-          duration = groupWidth / cfg.marquee.baseSpeedPxPerSec;
+          const baseDuration = groupWidth / cfg.marquee.baseSpeedPxPerSec;
+          duration = isMobile ? (baseDuration * 1.8) : baseDuration;
         }
 
         marqueeTween = gsap.to(faixaTrack, { xPercent: -50, ease: "none", duration: duration, repeat: -1 });
@@ -379,7 +384,9 @@ const MOTION_CONFIG = {
           ScrollTrigger.create({
             onUpdate: (self) => {
               const velocity = self.getVelocity();
-              const boost = Math.min(Math.abs(velocity) / 400, cfg.marquee.maxVelocityScale);
+              const maxBoost = isMobile ? 0.2 : cfg.marquee.maxVelocityScale;
+              const boostDivisor = isMobile ? 1200 : 400;
+              const boost = Math.min(Math.abs(velocity) / boostDivisor, maxBoost);
               gsap.to(marqueeTween, {
                 timeScale: 1 + boost,
                 duration: cfg.marquee.velocityScaleDuration,
@@ -451,9 +458,30 @@ const MOTION_CONFIG = {
             },
             onLeave: () => { heroSection.style.visibility = 'hidden'; },
             onEnterBack: () => { heroSection.style.visibility = 'visible'; },
-            onLeaveBack: () => { heroSection.style.visibility = 'visible'; }
+            onLeaveBack: () => { 
+              heroSection.style.visibility = 'visible'; 
+              curtainTl.progress(0);
+              gsap.set('.hero__block', { opacity: 1, yPercent: 0, clearProps: 'opacity,transform' });
+              gsap.set('.hero__curtain-overlay', { opacity: 0, clearProps: 'opacity' });
+              const sealEl = document.querySelector('.hero__seal');
+              if (sealEl) gsap.set(sealEl, { opacity: 1, clearProps: 'opacity' });
+            }
           }
         });
+
+        // Garante restauração absoluta da hero somente ao chegar ao topo da página (scrollTop <= 5)
+        window.addEventListener('scroll', () => {
+          if (window.scrollY <= 5) {
+            heroSection.style.visibility = 'visible';
+            if (curtainTl && curtainTl.scrollTrigger && curtainTl.scrollTrigger.progress <= 0.05) {
+              curtainTl.progress(0);
+              gsap.set('.hero__block', { opacity: 1, yPercent: 0, clearProps: 'opacity,transform' });
+              gsap.set('.hero__curtain-overlay', { opacity: 0, clearProps: 'opacity' });
+              const sealEl = document.querySelector('.hero__seal');
+              if (sealEl) gsap.set(sealEl, { opacity: 1, clearProps: 'opacity' });
+            }
+          }
+        }, { passive: true });
 
         // Re-sincronização de segurança em scrollEnd e refresh
         ScrollTrigger.addEventListener("scrollEnd", () => {
@@ -550,19 +578,21 @@ const MOTION_CONFIG = {
             }
           });
 
-          // Parallax suave da foto (yPercent: -4 a 4, scrub: 0.6) ancorado à coluna estática
-          gsap.fromTo(photoImg, {
-            yPercent: -cfg.secondFold.photoParallaxY
-          }, {
-            yPercent: cfg.secondFold.photoParallaxY,
-            ease: "none",
-            scrollTrigger: {
-              trigger: photoCol,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 0.6
-            }
-          });
+          // Parallax suave da foto (yPercent: -4 a 4, scrub: 0.6) ancorado à coluna estática (somente desktop >768px)
+          if (window.matchMedia('(min-width: 769px)').matches) {
+            gsap.fromTo(photoImg, {
+              yPercent: -cfg.secondFold.photoParallaxY
+            }, {
+              yPercent: cfg.secondFold.photoParallaxY,
+              ease: "none",
+              scrollTrigger: {
+                trigger: photoCol,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 0.6
+              }
+            });
+          }
         }
       }
 
@@ -745,15 +775,33 @@ const MOTION_CONFIG = {
         setupMagnetic(document.querySelector('.sobre__cta-link'));
       }
 
-      // Resize Listener Debounced
+      // Resize Listener Debounced (condicionado a mudanca real de largura no mobile para evitar refresh na barra de endereco)
       let resizeTimeout;
+      let lastWinWidth = window.innerWidth;
       window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
-          if (heroEntranceDone && typeof ScrollTrigger !== 'undefined') {
+          if (!heroEntranceDone || typeof ScrollTrigger === 'undefined') return;
+          const isMobile = window.matchMedia('(max-width: 768px)').matches;
+          if (isMobile) {
+            if (window.innerWidth !== lastWinWidth) {
+              lastWinWidth = window.innerWidth;
+              ScrollTrigger.refresh();
+            }
+          } else {
+            lastWinWidth = window.innerWidth;
             ScrollTrigger.refresh();
           }
         }, 200);
+      }, { passive: true });
+
+      window.addEventListener('orientationchange', () => {
+        lastWinWidth = window.innerWidth;
+        if (typeof ScrollTrigger !== 'undefined') {
+          requestAnimationFrame(() => {
+            ScrollTrigger.refresh();
+          });
+        }
       }, { passive: true });
 
       // Refresh no load e após fonts ready para cálculos precisos de pinning e scroll

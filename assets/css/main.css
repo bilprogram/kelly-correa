@@ -3452,6 +3452,10 @@ p:last-child {
     transform: none !important;
   }
 
+  .galeria__frame {
+    will-change: auto;
+  }
+
   .galeria__cursor {
     display: none !important;
   }
