@@ -1,0 +1,760 @@
+/**
+ * ============================================================================
+ * KELLY CORRÊA — NEUROPSICOPEDAGOGIA CLÍNICA
+ * PREMIUM DESIGN SYSTEM — SHARED LAYER (CSS)
+ * Source of Truth: index.html
+ * ============================================================================
+ */
+
+:root {
+  /* Motion & Easing Tokens */
+  --p-ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --p-ease-mask: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Color Palette */
+  --p-navy: #081228;
+  --p-navy-deep: #050C1B;
+  --p-navy-surface: #0E1E3D;
+  --p-ivory: #F7F4EE;
+  --p-paper: #FAF8F5;
+  --p-sand: #EFECE6;
+  --p-sage: #7B9E89;
+  --p-text-dark: #1E293B;
+  --p-text-muted: #64748B;
+  --p-text-light: rgba(247, 244, 238, 0.78);
+
+  /* Typography Families */
+  --p-font-serif: "Lora", Georgia, "Times New Roman", serif;
+  --p-font-sans: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Layout & Sizing Tokens */
+  --p-container-max: 1360px;
+  --p-padding-inline: clamp(24px, 6vw, 96px);
+  --p-radius-card: 28px;
+  --p-radius-pill: 9999px;
+}
+
+/* ============================================================================
+   1. SEÇÕES & RITMO DE BACKGROUNDS (.p-secao)
+   ============================================================================ */
+.p-secao {
+  position: relative;
+  width: 100%;
+  padding-block: clamp(80px, 9vw, 140px);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.p-secao--ivory {
+  background-color: var(--p-ivory);
+  color: var(--p-navy);
+}
+
+.p-secao--paper {
+  background-color: var(--p-paper);
+  color: var(--p-navy);
+}
+
+.p-secao--sand {
+  background-color: var(--p-sand);
+  color: var(--p-navy);
+}
+
+.p-secao--navy {
+  background-color: var(--p-navy);
+  color: var(--p-ivory);
+}
+
+.p-secao--night {
+  background-color: var(--p-navy-deep);
+  color: var(--p-ivory);
+}
+
+/* Gradientes suaves de transição (160px) entre seções de contraste */
+.p-gradiente-topo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 160px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.p-gradiente-topo--navy-ivory {
+  background: linear-gradient(180deg, var(--p-navy) 0%, transparent 100%);
+}
+
+.p-gradiente-topo--sand-navy {
+  background: linear-gradient(180deg, var(--p-sand) 0%, transparent 100%);
+  opacity: 0.12;
+}
+
+.p-gradiente-topo--paper-navy {
+  background: linear-gradient(180deg, var(--p-paper) 0%, transparent 100%);
+  opacity: 0.10;
+}
+
+/* Grão SVG sutil (Film-grain 0.035 - 0.04) */
+.p-grao {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.038'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Blobs suaves com desfoque de 90px */
+.p-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+
+.p-blob--sage {
+  width: 420px;
+  height: 420px;
+  background: rgba(123, 158, 137, 0.14);
+}
+
+/* Container Responsivo Padronizado */
+.p-container {
+  width: 100%;
+  max-width: var(--p-container-max);
+  margin-inline: auto;
+  padding-inline: var(--p-padding-inline);
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.p-container--narrow {
+  max-width: 920px;
+}
+
+/* ============================================================================
+   2. HERO DAS PÁGINAS INTERNAS (.p-page-hero)
+   Altura 60-70vh com padding-bottom generoso e visual editorial
+   ============================================================================ */
+.p-page-hero {
+  position: relative;
+  background-color: var(--p-navy);
+  color: var(--p-ivory);
+  min-height: clamp(480px, 64vh, 680px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: clamp(100px, 13vh, 150px);
+  padding-bottom: clamp(56px, 9vh, 120px);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Breadcrumbs Elegantes */
+.p-breadcrumbs {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--p-font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(247, 244, 238, 0.60);
+  margin-bottom: 24px;
+}
+
+.p-breadcrumbs a {
+  color: rgba(247, 244, 238, 0.75);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.p-breadcrumbs a:hover {
+  color: var(--p-ivory);
+}
+
+.p-breadcrumbs__sep {
+  opacity: 0.4;
+  font-size: 11px;
+}
+
+.p-breadcrumbs__current {
+  color: var(--p-sage);
+}
+
+/* ============================================================================
+   3. TIPOGRAFIA EDITORIAL (.p-eyebrow, .p-titulo, .p-lead)
+   ============================================================================ */
+.p-eyebrow-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.p-eyebrow-line {
+  display: inline-block;
+  width: 48px;
+  height: 1px;
+  background-color: var(--p-sage);
+  transform-origin: left center;
+}
+
+.p-eyebrow {
+  font-family: var(--p-font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--p-sage);
+  display: inline-block;
+}
+
+.p-titulo {
+  font-family: var(--p-font-serif);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  margin: 0 0 24px 0;
+}
+
+.p-titulo--h1 {
+  font-size: clamp(2.3rem, 4.6vw, 4.2rem);
+  line-height: 1.06;
+}
+
+.p-titulo--h2 {
+  font-size: clamp(1.9rem, 3.4vw, 3.0rem);
+  line-height: 1.12;
+}
+
+.p-titulo--h3 {
+  font-size: clamp(1.25rem, 1.8vw, 1.55rem);
+  line-height: 1.25;
+}
+
+.p-titulo em,
+.p-titulo .p-em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--p-sage);
+}
+
+.p-secao--ivory .p-titulo,
+.p-secao--paper .p-titulo,
+.p-secao--sand .p-titulo {
+  color: var(--p-navy);
+}
+
+.p-secao--navy .p-titulo,
+.p-secao--night .p-titulo,
+.p-page-hero .p-titulo {
+  color: var(--p-ivory);
+}
+
+.p-lead {
+  font-family: var(--p-font-sans);
+  font-size: 18px;
+  line-height: 1.7;
+  max-width: 56ch;
+  margin: 0 0 28px 0;
+}
+
+.p-secao--ivory .p-lead,
+.p-secao--paper .p-lead,
+.p-secao--sand .p-lead {
+  color: #334155;
+}
+
+.p-secao--navy .p-lead,
+.p-secao--night .p-lead,
+.p-page-hero .p-lead {
+  color: rgba(247, 244, 238, 0.78);
+}
+
+.p-texto {
+  font-family: var(--p-font-sans);
+  font-size: 16.5px;
+  line-height: 1.75;
+  color: #334155;
+  max-width: 62ch;
+  margin-bottom: 20px;
+  text-wrap: pretty;
+}
+
+.p-secao--navy .p-texto,
+.p-secao--night .p-texto {
+  color: rgba(247, 244, 238, 0.75);
+}
+
+/* Máscara de Linha Editorial para Títulos */
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+}
+
+.line-inner {
+  display: block;
+  will-change: transform;
+}
+
+/* ============================================================================
+   4. CARDS PREMIUM (.p-card, .p-card-grid)
+   Fundo papel texturizado, borda 1px a 10%, raio 28px e sombra suave
+   ============================================================================ */
+.p-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(24px, 3.2vw, 40px);
+  margin-top: clamp(32px, 4vw, 48px);
+}
+
+.p-card-grid--2cols {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.p-card-grid--3cols {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.p-card {
+  position: relative;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(8, 18, 40, 0.08);
+  border-radius: var(--p-radius-card);
+  padding: clamp(28px, 3.6vw, 44px);
+  box-shadow: 0 30px 60px -30px rgba(8, 18, 40, 0.12);
+  transition: transform 0.4s var(--p-ease-soft), box-shadow 0.4s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.p-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 36px 70px -25px rgba(8, 18, 40, 0.18);
+}
+
+.p-card--sand {
+  background-color: var(--p-paper);
+}
+
+.p-card--dark {
+  background-color: rgba(14, 30, 61, 0.75);
+  border-color: rgba(247, 244, 238, 0.10);
+  color: var(--p-ivory);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.p-card__number {
+  font-family: var(--p-font-serif);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--p-sage);
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.p-card__title {
+  font-family: var(--p-font-serif);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--p-navy);
+  margin: 0 0 16px 0;
+}
+
+.p-card--dark .p-card__title {
+  color: var(--p-ivory);
+}
+
+.p-card__desc {
+  font-family: var(--p-font-sans);
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: #475569;
+  margin: 0;
+}
+
+.p-card--dark .p-card__desc {
+  color: rgba(247, 244, 238, 0.75);
+}
+
+/* ============================================================================
+   5. BOTÕES PREMIUM (.p-btn)
+   Botão pílula com shimmer beam de 1px e atração magnética
+   ============================================================================ */
+.p-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 56px;
+  padding-inline: 32px;
+  border-radius: var(--p-radius-pill);
+  font-family: var(--p-font-sans);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.25);
+  transition: transform 0.35s var(--p-ease-soft), box-shadow 0.35s ease;
+  will-change: transform;
+  outline: none;
+}
+
+.p-btn:focus-visible {
+  outline: 2px solid var(--p-sage);
+  outline-offset: 4px;
+}
+
+.p-btn:active {
+  transform: scale(0.97) !important;
+}
+
+/* Variante Pílula Marfim (para fundos escuros) */
+.p-btn--ivory {
+  background-color: var(--p-ivory);
+  color: var(--p-navy) !important;
+}
+
+/* Variante Pílula Marinho (para fundos claros) */
+.p-btn--navy {
+  background-color: var(--p-navy);
+  color: var(--p-ivory) !important;
+}
+
+/* Shimmer Beam Conic Gradient */
+.p-btn__beam {
+  position: absolute;
+  inset: -150%;
+  background: conic-gradient(from 0deg, transparent 0 340deg, rgba(123, 158, 137, 0.8) 360deg);
+  opacity: 0;
+  pointer-events: none;
+  animation: pBtnBeamSpin 2.4s linear infinite;
+  transition: opacity 0.4s ease;
+}
+
+.p-btn:hover .p-btn__beam {
+  opacity: 1;
+}
+
+@keyframes pBtnBeamSpin {
+  100% { transform: rotate(360deg); }
+}
+
+.p-btn__content {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.p-btn__arrow {
+  transition: transform 0.4s var(--p-ease-soft);
+  flex-shrink: 0;
+}
+
+.p-btn:hover .p-btn__arrow {
+  transform: rotate(-30deg) translateX(3px);
+}
+
+/* ============================================================================
+   6. FAQ / ACORDEÕES EDITORIAIS (.p-faq)
+   Ícone plus giratório 45deg, linha divisória elegante, sem bordas pesadas
+   ============================================================================ */
+.p-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: clamp(32px, 4vw, 48px);
+}
+
+.p-faq-item {
+  position: relative;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(8, 18, 40, 0.08);
+  border-radius: 20px;
+  padding: 24px 28px;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.p-secao--sand .p-faq-item,
+.p-secao--paper .p-faq-item {
+  background-color: #FFFFFF;
+}
+
+.p-faq-item[open] {
+  box-shadow: 0 16px 36px -12px rgba(8, 18, 40, 0.10);
+  border-color: rgba(123, 158, 137, 0.35);
+}
+
+.p-faq-summary {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  outline: none;
+  font-family: var(--p-font-serif);
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--p-navy);
+  gap: 16px;
+}
+
+.p-faq-summary::-webkit-details-marker {
+  display: none;
+}
+
+.p-faq-icon {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(123, 158, 137, 0.12);
+  color: var(--p-sage);
+  flex-shrink: 0;
+  transition: transform 0.4s var(--p-ease-soft), background-color 0.3s ease;
+}
+
+.p-faq-item[open] .p-faq-icon {
+  transform: rotate(45deg);
+  background-color: var(--p-sage);
+  color: #FFFFFF;
+}
+
+.p-faq-content {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(8, 18, 40, 0.06);
+  font-family: var(--p-font-sans);
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: #475569;
+}
+
+/* ============================================================================
+   7. TIMELINE DE PROCESSOS / ETAPAS (.p-timeline)
+   ============================================================================ */
+.p-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  position: relative;
+  margin-top: clamp(36px, 4vw, 56px);
+}
+
+.p-timeline-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: clamp(20px, 3vw, 40px);
+  align-items: start;
+}
+
+.p-timeline-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--p-paper);
+  border: 1px solid rgba(123, 158, 137, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--p-font-serif);
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--p-sage);
+  box-shadow: 0 10px 24px -8px rgba(8, 18, 40, 0.10);
+  flex-shrink: 0;
+}
+
+.p-timeline-body {
+  background: #FFFFFF;
+  border: 1px solid rgba(8, 18, 40, 0.08);
+  border-radius: var(--p-radius-card);
+  padding: clamp(28px, 3.5vw, 40px);
+  box-shadow: 0 20px 40px -20px rgba(8, 18, 40, 0.08);
+}
+
+/* ============================================================================
+   8. CONTAINER DE MAPA & CONTATO (.p-mapa-container, .p-form-control)
+   ============================================================================ */
+.p-mapa-wrap {
+  border-radius: var(--p-radius-card);
+  border: 1px solid rgba(8, 18, 40, 0.10);
+  overflow: hidden;
+  box-shadow: 0 30px 60px -30px rgba(8, 18, 40, 0.15);
+  background: #EFECE6;
+}
+
+.p-mapa-wrap iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  display: block;
+  border: none;
+}
+
+
+/* ============================================================================
+   9. RESPONSIVIDADE & MEDIA QUERIES
+   ============================================================================ */
+@media (max-width: 1023px) {
+  .p-card-grid--3cols {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 639px) {
+  .p-card-grid--2cols,
+  .p-card-grid--3cols {
+    grid-template-columns: 1fr;
+  }
+
+  .p-timeline-item {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .p-timeline-badge {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+
+  .p-btn {
+    width: 100%;
+    max-width: 380px;
+  }
+}
+
+/* Acessibilidade de Redução de Movimento */
+@media (prefers-reduced-motion: reduce) {
+  .p-card,
+  .p-btn,
+  .p-btn__arrow,
+  .p-faq-icon {
+    transition: none !important;
+  }
+
+  .p-btn__beam {
+    animation: none !important;
+  }
+
+  .line-mask {
+    overflow: visible !important;
+  }
+}
+
+/* ============================================================================
+   10. INNER PAGES BRIDGE — applied by adding classes next to existing ones
+   Tokens at top: --p-ease-soft / --p-ease-mask (see :root)
+   ============================================================================ */
+.p-secao { padding-block: clamp(96px, 11vw, 168px); }
+
+/* Cards: paper, 1px border at 10%, radius 28px, soft shadow */
+.p-card {
+  background-color: var(--p-paper);
+  border: 1px solid rgba(8, 18, 40, 0.10);
+  box-shadow: 0 30px 60px -30px rgba(8, 18, 40, 0.14);
+}
+.p-secao--paper .p-card { background-color: #FFFFFF; }
+.p-card.highlight-box { display: block; }
+@media (hover: none), (pointer: coarse) { .p-card:hover { transform: none; } }
+
+/* Eyebrow with 48px x 1px line; darker sage on light backgrounds for AA */
+.p-eyebrow--line::before {
+  content: ""; display: inline-block; width: 48px; height: 1px;
+  background-color: currentColor; vertical-align: middle; margin-right: 16px;
+}
+.p-secao--ivory .p-eyebrow, .p-secao--paper .p-eyebrow, .p-secao--sand .p-eyebrow { color: #4F6F5C; }
+
+/* Headings on inner pages */
+.p-titulo.line-mask { overflow: hidden; }
+.p-page-hero .p-titulo--h1 { max-width: 20ch; }
+.p-texto-sec p:not([class]), .p-texto-sec li { font-size: 16.5px; line-height: 1.7; max-width: 62ch; text-wrap: pretty; }
+.p-secao--night .section-header .text-muted { color: rgba(247, 244, 238, 0.72) !important; }
+
+/* Hero: grain + soft blob, content never touches the bottom edge */
+.p-page-hero::before { display: none; }
+.p-page-hero > .container { position: relative; z-index: 2; }
+.p-blob--hero { top: -12%; right: -8%; animation: pBlobDrift 40s ease-in-out infinite alternate; }
+.p-blob.p-paused { animation-play-state: paused; }
+@keyframes pBlobDrift { to { transform: translate3d(-12%, 18%, 0) scale(1.08); } }
+
+/* Content above grain */
+.p-secao > .container, .p-secao > .container--narrow { position: relative; z-index: 2; }
+
+/* Soft fade into the navy band (height never exceeds the section padding) */
+.p-fade-to-navy::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0;
+  height: clamp(40px, 10vw, 160px); pointer-events: none; z-index: 1;
+  background: linear-gradient(180deg, rgba(8, 18, 40, 0) 0%, var(--p-navy) 100%);
+}
+.p-fade-to-night::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0;
+  height: clamp(40px, 10vw, 160px); pointer-events: none; z-index: 1;
+  background: linear-gradient(180deg, rgba(5, 12, 27, 0) 0%, var(--p-navy-deep) 100%);
+}
+
+/* Buttons: neutralise the old green fill/glow when the premium pill is applied */
+.btn.p-btn { height: auto; min-height: 56px; }
+.btn.p-btn--ivory, .btn.p-btn--ivory:hover { background-color: var(--p-ivory); color: var(--p-navy) !important; border-color: transparent; }
+.btn.p-btn--navy, .btn.p-btn--navy:hover { background-color: var(--p-navy); color: var(--p-ivory) !important; border-color: transparent; }
+.btn.p-btn--ghost { background: transparent; border: 1px solid rgba(8, 18, 40, 0.25); color: var(--p-navy) !important; box-shadow: none; }
+.btn.p-btn--ghost:hover { border-color: var(--p-navy); background: transparent; color: var(--p-navy) !important; }
+.btn.p-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 34px -12px rgba(8, 18, 40, 0.35); }
+.p-btn > *:not(.p-btn__beam) { position: relative; z-index: 2; }
+.p-btn__beam { z-index: 0; border-radius: inherit; }
+
+/* FAQ: plus icon rotating 45deg (decorative chevron hidden) */
+.p-faq-item .faq-icon { display: none; }
+.p-faq-summary::after {
+  content: ""; flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+  background:
+    linear-gradient(currentColor, currentColor) center / 12px 1.5px no-repeat,
+    linear-gradient(currentColor, currentColor) center / 1.5px 12px no-repeat,
+    rgba(123, 158, 137, 0.14);
+  color: #4F6F5C;
+  transition: transform 0.5s var(--p-ease-soft), background-color 0.3s ease;
+}
+.p-faq-item[open] > .p-faq-summary::after { transform: rotate(45deg); }
+.p-faq-item .faq-answer { overflow: hidden; }
+.p-faq-summary:focus-visible { outline: 2px solid var(--p-sage); outline-offset: 6px; border-radius: 8px; }
+
+/* Timeline: line drawn on scroll across the steps grid */
+.p-timeline-draw { position: relative; }
+.p-timeline-draw::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -20px; height: 1px;
+  background: var(--p-sage); transform-origin: left center;
+  transform: scaleX(var(--p-draw, 1)); opacity: 0.6;
+}
+.p-js .p-timeline-draw::before { transform: scaleX(var(--p-draw, 0)); }
+
+/* Map container + NAP */
+.p-mapa-wrap.map-container { border-radius: var(--p-radius-card); }
+.u-nowrap { white-space: nowrap; }
+
+/* Floating WhatsApp must not cover the footer bottom bar */
+@media (max-width: 640px) { .p-page .rodape { padding-bottom: 104px; } }
+
+/* Initial states (only when JS + GSAP are ready and motion is allowed) */
+.p-js .p-shown { opacity: 1; transform: none; filter: none; clip-path: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .p-blob { animation: none !important; }
+  .p-faq-summary::after { transition: none; }
+  .p-timeline-draw::before { transform: none !important; }
+}

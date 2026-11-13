@@ -1,0 +1,17 @@
+# Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# Dependências e Builds
+node_modules/
+dist/
+build/
+
+# Logs e Temporários
+*.log
+*.tmp
+*.bak
+
+# Antigravity Context Filter
+.geminiignore
+

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kellycorrea.com.br/sitemap.xml
+
