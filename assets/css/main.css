@@ -781,7 +781,7 @@ p:last-child {
   padding-left: clamp(24px, 6vw, 96px);
   padding-right: clamp(24px, 5vw, 64px);
   padding-top: clamp(80px, 12vh, 120px);
-  padding-bottom: clamp(14px, 2vh, 24px);
+  padding-bottom: clamp(56px, 9vh, 112px);
   box-sizing: border-box;
   flex: 1;
   display: flex;
@@ -1173,7 +1173,7 @@ p:last-child {
 }
 
 @media (max-width: 768px) {
-  .hero__container { padding-bottom: 5.5rem; }
+  .hero__container { padding-bottom: clamp(48px, 8vh, 88px); }
   .hero__video, .hero__poster { object-position: 70% center; }
   .hero__gradient {
     background: linear-gradient(
