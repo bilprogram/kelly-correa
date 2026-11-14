@@ -14,22 +14,22 @@ const PASSOS_MOTION_CONFIG = {
     expoOut: "expo.out"
   },
   timings: {
-    eyebrowLine: 0.9,
-    eyebrowText: 0.9,
-    headingMask: 1.2,
-    headingStagger: 0.12,
-    italicFocus: 1.4,
-    leadFade: 1.1,
-    cardCurtain: 1.3,
-    cardContentStagger: 0.08,
+    eyebrowLine: 0.8,
+    eyebrowText: 0.8,
+    headingMask: 1.05,
+    headingStagger: 0.10,
+    italicFocus: 1.2,
+    leadFade: 0.95,
+    cardCurtain: 1.15,
+    cardContentStagger: 0.06,
     nodePulse: 1.2,
     numberFill: 0.8,
-    ctaReveal: 0.8,
+    ctaReveal: 0.7,
     safetyTimeoutMs: 3000
   },
   magnetic: {
-    pullX: 0.22,
-    pullY: 0.30
+    pullX: 0.18,
+    pullY: 0.25
   }
 };
 
@@ -122,11 +122,14 @@ const PASSOS_MOTION_CONFIG = {
       '.passos__lead'
     ];
 
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const isDesktop = !isMobile;
+
     const headingTl = gsap.timeline({
       scrollTrigger: {
         id: 'passos-heading',
         trigger: passosSection,
-        start: 'top 75%',
+        start: isDesktop ? 'top 80%' : 'top 75%',
         once: true,
         onStart: () => { 
           passosAnimated = true; 
@@ -144,7 +147,7 @@ const PASSOS_MOTION_CONFIG = {
         { scaleX: 1, duration: cfg.timings.eyebrowLine, ease: cfg.easings.mask }
       )
       .fromTo('.passos__eyebrow', 
-        { opacity: 0, x: -12 }, 
+        { opacity: 0, x: -10 }, 
         { opacity: 1, x: 0, duration: cfg.timings.eyebrowText, ease: cfg.easings.soft }, 
         '-=0.7'
       )
@@ -154,30 +157,30 @@ const PASSOS_MOTION_CONFIG = {
         '-=0.6'
       )
       .fromTo('.passos__em', 
-        { filter: 'blur(12px)', opacity: 0 }, 
+        { filter: isMobile ? 'blur(5px)' : 'blur(8px)', opacity: 0 }, 
         { filter: 'blur(0px)', opacity: 1, duration: cfg.timings.italicFocus, ease: cfg.easings.soft }, 
         '-=1.0'
       )
       .fromTo('.passos__lead', 
-        { y: 24, filter: 'blur(6px)', opacity: 0 }, 
+        { y: isMobile ? 18 : 21, filter: isMobile ? 'blur(3px)' : 'blur(4px)', opacity: 0 }, 
         { y: 0, filter: 'blur(0px)', opacity: 1, duration: cfg.timings.leadFade, ease: cfg.easings.soft }, 
         '-=1.1'
       );
 
     // =========================================================================
-    // STEP 3 — BACKGROUND HALO PARALLAX
+    // STEP 3 — BACKGROUND HALO PARALLAX (Calibrado -15% yPercent, -25% scrub)
     // =========================================================================
     if (halo) {
       gsap.fromTo(halo, 
-        { yPercent: -8 }, 
+        { yPercent: -6.8 }, 
         {
-          yPercent: 8,
+          yPercent: 6.8,
           ease: 'none',
           scrollTrigger: {
             trigger: passosSection,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: 1
+            scrub: 0.75
           }
         }
       );
@@ -337,11 +340,11 @@ const PASSOS_MOTION_CONFIG = {
             });
             tl.fromTo(card, 
               { clipPath: 'inset(0 0 100% 0 round 28px)' }, 
-              { clipPath: 'inset(0 0 0% 0 round 28px)', duration: cfg.timings.cardCurtain, ease: cfg.easings.mask, delay: idx * 0.12 }
+              { clipPath: 'inset(0 0 0% 0 round 28px)', duration: cfg.timings.cardCurtain, ease: cfg.easings.mask, delay: idx * 0.10 }
             )
             .fromTo(cardContent, 
-              { y: 24, filter: 'blur(6px)', opacity: 0 }, 
-              { y: 0, filter: 'blur(0px)', opacity: 1, duration: 0.9, stagger: cfg.timings.cardContentStagger, ease: cfg.easings.soft }, 
+              { y: isMobile ? 18 : 21, filter: isMobile ? 'blur(3px)' : 'blur(4px)', opacity: 0 }, 
+              { y: 0, filter: 'blur(0px)', opacity: 1, duration: 0.8, stagger: cfg.timings.cardContentStagger, ease: cfg.easings.soft }, 
               '-=0.8'
             );
           });

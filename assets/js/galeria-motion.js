@@ -14,15 +14,15 @@ const GALERIA_MOTION_CONFIG = {
     expoOut: "expo.out"
   },
   timings: {
-    headingMask: 1.2,
-    headingStagger: 0.12,
-    italicFocus: 1.4,
-    eyebrowLine: 0.9,
-    photoCurtain: 1.4,
-    photoScale: 1.8,
-    captionReveal: 0.8,
-    cursorScale: 0.5,
-    lightboxFlip: 0.9,
+    headingMask: 1.05,
+    headingStagger: 0.10,
+    italicFocus: 1.2,
+    eyebrowLine: 0.8,
+    photoCurtain: 1.2,
+    photoScale: 1.6,
+    captionReveal: 0.7,
+    cursorScale: 0.45,
+    lightboxFlip: 0.8,
     safetyTimeoutMs: 3000
   },
   cursor: {
@@ -112,11 +112,14 @@ const GALERIA_MOTION_CONFIG = {
     // =========================================================================
     // STEP 6 — HEADING ENTRANCE (H2 Line-Mask & Italic Focus)
     // =========================================================================
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const isDesktop = !isMobile;
+
     const headingTl = gsap.timeline({
       scrollTrigger: {
         id: 'galeria-heading',
         trigger: galeriaSection,
-        start: 'top 75%',
+        start: isDesktop ? 'top 80%' : 'top 75%',
         once: true,
         onStart: () => { 
           galeriaAnimated = true; 
@@ -134,8 +137,8 @@ const GALERIA_MOTION_CONFIG = {
         { scaleX: 1, duration: cfg.timings.eyebrowLine, ease: cfg.easings.mask }
       )
       .fromTo('.galeria__eyebrow', 
-        { opacity: 0, y: 14 }, 
-        { opacity: 1, y: 0, duration: 0.8, ease: cfg.easings.soft }, 
+        { opacity: 0, y: isMobile ? 10 : 12 }, 
+        { opacity: 1, y: 0, duration: 0.7, ease: cfg.easings.soft }, 
         '-=0.7'
       )
       .fromTo('.galeria__headline .galeria__line-inner', 
@@ -144,13 +147,13 @@ const GALERIA_MOTION_CONFIG = {
         '-=0.6'
       )
       .fromTo('.galeria__em', 
-        { filter: 'blur(12px)', opacity: 0.4 }, 
+        { filter: isMobile ? 'blur(5px)' : 'blur(8px)', opacity: 0.4 }, 
         { filter: 'blur(0px)', opacity: 1, duration: cfg.timings.italicFocus, ease: cfg.easings.soft }, 
         '-=1.0'
       )
       .fromTo('.galeria__intro', 
-        { opacity: 0, y: 16 }, 
-        { opacity: 1, y: 0, duration: 1.0, ease: cfg.easings.soft }, 
+        { opacity: 0, y: isMobile ? 12 : 14 }, 
+        { opacity: 1, y: 0, duration: 0.9, ease: cfg.easings.soft }, 
         '-=0.8'
       );
 
@@ -322,11 +325,11 @@ const GALERIA_MOTION_CONFIG = {
           }
         }
 
-        // Parallax horizontal interno da imagem (8% de velocidade relativa)
+        // Parallax horizontal interno da imagem (calibrado -15%)
         gsap.fromTo(img, 
-          { xPercent: -6 }, 
+          { xPercent: -5.1 }, 
           {
-            xPercent: 6,
+            xPercent: 5.1,
             ease: 'none',
             scrollTrigger: {
               trigger: item,

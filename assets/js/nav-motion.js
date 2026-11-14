@@ -13,14 +13,14 @@ const NAV_MOTION_CONFIG = {
     mask: "cubic-bezier(0.65, 0, 0.35, 1)"  // --ease-mask
   },
   timings: {
-    entranceDuration: 0.9,
-    entranceStagger: 0.06,
-    mobileItemStagger: 0.08,
+    entranceDuration: 0.8,
+    entranceStagger: 0.05,
+    mobileItemStagger: 0.06,
     scrollThreshold: 40
   },
   magnetic: {
-    pullX: 0.22,
-    pullY: 0.30
+    pullX: 0.18,
+    pullY: 0.25
   }
 };
 
@@ -70,7 +70,7 @@ const NAV_MOTION_CONFIG = {
     if (typeof gsap !== 'undefined' && !isReducedMotion) {
       const entranceItems = [brandLink, ...navLinks, navCta].filter(Boolean);
       gsap.fromTo(entranceItems,
-        { y: -12, opacity: 0 },
+        { y: -10, opacity: 0 },
         {
           y: 0,
           opacity: 1,

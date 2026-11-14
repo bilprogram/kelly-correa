@@ -14,18 +14,18 @@ const DUVIDAS_MOTION_CONFIG = {
     expoOut: "expo.out"
   },
   timings: {
-    eyebrowLine: 0.9,
-    eyebrowText: 0.9,
-    headingMask: 1.2,
-    headingStagger: 0.12,
-    italicFocus: 1.4,
-    leadFade: 1.1,
-    linkFade: 0.9,
-    borderDraw: 1.2,
-    borderStagger: 0.10,
-    itemContentStagger: 0.06,
-    accordionOpenMs: 550,
-    accordionCloseMs: 450,
+    eyebrowLine: 0.8,
+    eyebrowText: 0.8,
+    headingMask: 1.05,
+    headingStagger: 0.10,
+    italicFocus: 1.2,
+    leadFade: 0.95,
+    linkFade: 0.8,
+    borderDraw: 1.05,
+    borderStagger: 0.08,
+    itemContentStagger: 0.05,
+    accordionOpenMs: 480,
+    accordionCloseMs: 400,
     safetyTimeoutMs: 3000
   }
 };
@@ -112,11 +112,14 @@ const DUVIDAS_MOTION_CONFIG = {
       '.duvidas__link'
     ];
 
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const isDesktop = !isMobile;
+
     const headingTl = gsap.timeline({
       scrollTrigger: {
         id: 'duvidas-heading',
         trigger: duvidasSection,
-        start: 'top 75%',
+        start: isDesktop ? 'top 80%' : 'top 75%',
         once: true,
         onStart: () => { 
           duvidasAnimated = true; 
@@ -134,7 +137,7 @@ const DUVIDAS_MOTION_CONFIG = {
         { scaleX: 1, duration: cfg.timings.eyebrowLine, ease: cfg.easings.mask }
       )
       .fromTo('.duvidas__eyebrow', 
-        { opacity: 0, x: -12 }, 
+        { opacity: 0, x: -10 }, 
         { opacity: 1, x: 0, duration: cfg.timings.eyebrowText, ease: cfg.easings.soft }, 
         '-=0.7'
       )
@@ -144,17 +147,17 @@ const DUVIDAS_MOTION_CONFIG = {
         '-=0.6'
       )
       .fromTo('.duvidas__em', 
-        { filter: 'blur(12px)', opacity: 0 }, 
+        { filter: isMobile ? 'blur(5px)' : 'blur(8px)', opacity: 0 }, 
         { filter: 'blur(0px)', opacity: 1, duration: cfg.timings.italicFocus, ease: cfg.easings.soft }, 
         '-=1.0'
       )
       .fromTo('.duvidas__lead', 
-        { y: 24, filter: 'blur(6px)', opacity: 0 }, 
+        { y: isMobile ? 18 : 21, filter: isMobile ? 'blur(3px)' : 'blur(4px)', opacity: 0 }, 
         { y: 0, filter: 'blur(0px)', opacity: 1, duration: cfg.timings.leadFade, ease: cfg.easings.soft }, 
         '-=1.1'
       )
       .fromTo('.duvidas__link', 
-        { opacity: 0, y: 16 }, 
+        { opacity: 0, y: isMobile ? 12 : 14 }, 
         { opacity: 1, y: 0, duration: cfg.timings.linkFade, ease: cfg.easings.soft }, 
         '-=0.7'
       );
@@ -185,8 +188,8 @@ const DUVIDAS_MOTION_CONFIG = {
               );
             }
             itemTl.fromTo(rowContent, 
-              { y: 20, opacity: 0 }, 
-              { y: 0, opacity: 1, duration: 0.8, stagger: cfg.timings.itemContentStagger, ease: cfg.easings.soft }, 
+              { y: isMobile ? 15 : 17, opacity: 0 }, 
+              { y: 0, opacity: 1, duration: 0.7, stagger: cfg.timings.itemContentStagger, ease: cfg.easings.soft }, 
               '-=0.9'
             );
           });
@@ -194,18 +197,18 @@ const DUVIDAS_MOTION_CONFIG = {
       });
     }
 
-    // Step 3: Background Halo Parallax
+    // Step 3: Background Halo Parallax (Calibrado -15% yPercent, -25% scrub)
     if (halo) {
       gsap.fromTo(halo, 
-        { yPercent: -8 }, 
+        { yPercent: -6.8 }, 
         {
-          yPercent: 8,
+          yPercent: 6.8,
           ease: 'none',
           scrollTrigger: {
             trigger: duvidasSection,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: 1
+            scrub: 0.75
           }
         }
       );
@@ -245,7 +248,7 @@ const DUVIDAS_MOTION_CONFIG = {
         gsap.to(panel, {
           height: 0,
           opacity: 0.2,
-          duration: 0.45,
+          duration: 0.40,
           ease: cfg.easings.soft,
           onComplete: () => {
             item.removeAttribute('open');
@@ -288,7 +291,7 @@ const DUVIDAS_MOTION_CONFIG = {
           { height: 0, opacity: 1, overflow: 'hidden' }, 
           {
             height: 'auto',
-            duration: 0.55,
+            duration: 0.48,
             ease: cfg.easings.soft,
             onComplete: () => {
               gsap.set(panel, { clearProps: 'overflow' });
@@ -299,8 +302,8 @@ const DUVIDAS_MOTION_CONFIG = {
 
         if (answer) {
           gsap.fromTo(answer,
-            { opacity: 0, y: 12, filter: 'blur(4px)' },
-            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.55, delay: 0.08, ease: cfg.easings.soft }
+            { opacity: 0, y: isMobile ? 8 : 10, filter: isMobile ? 'blur(2px)' : 'blur(3px)' },
+            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.48, delay: 0.06, ease: cfg.easings.soft }
           );
         }
       }

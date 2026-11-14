@@ -14,14 +14,14 @@ const SERVICOS_MOTION_CONFIG = {
     expoOut: "expo.out"
   },
   timings: {
-    eyebrowLine: 0.9,
-    eyebrowText: 0.9,
-    headlineLine: 1.2,
-    headlineStagger: 0.12,
-    emFocus: 1.4,
-    introText: 1.1,
-    cardClipDuration: 1.4,
-    cardContentStagger: 0.1,
+    eyebrowLine: 0.8,
+    eyebrowText: 0.8,
+    headlineLine: 1.05,
+    headlineStagger: 0.10,
+    emFocus: 1.2,
+    introText: 0.95,
+    cardClipDuration: 1.2,
+    cardContentStagger: 0.08,
     counterRoll: 0.7,
     ghostRoll: 0.9,
     ringPulse: 1.2,
@@ -156,10 +156,13 @@ const SERVICOS_MOTION_CONFIG = {
         '.servicos__counter'
       ];
 
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      const isDesktop = !isMobile;
+
       const tlHeader = gsap.timeline({
         scrollTrigger: {
           trigger: servicosSection,
-          start: "top 75%",
+          start: isDesktop ? "top 80%" : "top 75%",
           once: true,
           onStart: () => {
             gsap.set(headerElements, { willChange: 'transform,opacity,filter' });
@@ -177,7 +180,7 @@ const SERVICOS_MOTION_CONFIG = {
         0
       );
       tlHeader.fromTo('.servicos__eyebrow', 
-        { opacity: 0, x: -12 }, 
+        { opacity: 0, x: -10 }, 
         { opacity: 1, x: 0, duration: cfg.timings.eyebrowText, ease: cfg.easings.soft }, 
         0.1
       );
@@ -187,23 +190,23 @@ const SERVICOS_MOTION_CONFIG = {
         0.2
       );
       tlHeader.fromTo('.servicos__em', 
-        { opacity: 0, filter: 'blur(12px)' }, 
+        { opacity: 0, filter: isMobile ? 'blur(5px)' : 'blur(8px)' }, 
         { opacity: 1, filter: 'blur(0px)', duration: cfg.timings.emFocus, ease: "power3.out" }, 
         0.5
       );
       tlHeader.fromTo('.servicos__intro', 
-        { opacity: 0, y: 24, filter: 'blur(6px)' }, 
+        { opacity: 0, y: isMobile ? 18 : 21, filter: isMobile ? 'blur(3px)' : 'blur(4px)' }, 
         { opacity: 1, y: 0, filter: 'blur(0px)', duration: cfg.timings.introText, ease: cfg.easings.soft }, 
         0.6
       );
       tlHeader.fromTo('.servicos__counter', 
-        { opacity: 0, y: 16 }, 
+        { opacity: 0, y: isMobile ? 12 : 14 }, 
         { opacity: 1, y: 0, duration: 0.8, ease: cfg.easings.soft }, 
         0.75
       );
 
       // ----------------------------------------------------------------------
-      // STEP 3: PARALLAX DA LIVING AURORA NO SCROLL
+      // STEP 3: PARALLAX DA LIVING AURORA NO SCROLL (Calibrado -15% yPercent, -25% scrub)
       // ----------------------------------------------------------------------
       const blobNavy = servicosSection.querySelector('.servicos__blob--navy');
       const blobSage = servicosSection.querySelector('.servicos__blob--sage');
@@ -211,37 +214,37 @@ const SERVICOS_MOTION_CONFIG = {
 
       if (blobNavy) {
         gsap.to(blobNavy, {
-          yPercent: 10,
+          yPercent: 8.5,
           ease: "none",
           scrollTrigger: {
             trigger: servicosSection,
             start: "top bottom",
             end: "bottom top",
-            scrub: 1
+            scrub: 0.75
           }
         });
       }
       if (blobSage) {
         gsap.to(blobSage, {
-          yPercent: -10,
-          ease: "none",
-          scrollTrigger: {
-            trigger: servicosSection,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1.2
-          }
-        });
-      }
-      if (blobIvory) {
-        gsap.to(blobIvory, {
-          yPercent: 8,
+          yPercent: -8.5,
           ease: "none",
           scrollTrigger: {
             trigger: servicosSection,
             start: "top bottom",
             end: "bottom top",
             scrub: 0.9
+          }
+        });
+      }
+      if (blobIvory) {
+        gsap.to(blobIvory, {
+          yPercent: 6.8,
+          ease: "none",
+          scrollTrigger: {
+            trigger: servicosSection,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.7
           }
         });
       }
@@ -276,8 +279,8 @@ const SERVICOS_MOTION_CONFIG = {
 
         if (cardInner.length > 0) {
           tlCardEntrance.fromTo(cardInner, 
-            { opacity: 0, y: 24, filter: 'blur(6px)' }, 
-            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.9, stagger: cfg.timings.cardContentStagger, ease: cfg.easings.soft }, 
+            { opacity: 0, y: isMobile ? 18 : 21, filter: isMobile ? 'blur(3px)' : 'blur(4px)' }, 
+            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.8, stagger: cfg.timings.cardContentStagger, ease: cfg.easings.soft }, 
             0.2
           );
         }

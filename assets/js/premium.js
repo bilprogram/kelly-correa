@@ -4,10 +4,10 @@
  */
 const PREMIUM_MOTION_CONFIG = {
   ease: { soft: 'cubic-bezier(0.22, 1, 0.36, 1)', mask: 'cubic-bezier(0.65, 0, 0.35, 1)' },
-  heading: { duration: 1.2, stagger: 0.12 },
-  reveal: { duration: 1.1, y: 24, blur: 6, start: 'top 85%' },
-  curtain: { duration: 1.4 },
-  faq: { duration: 550 },
+  heading: { duration: 1.05, stagger: 0.10 },
+  reveal: { duration: 0.95, y: 21, blur: 4, start: 'top 85%' },
+  curtain: { duration: 1.2 },
+  faq: { duration: 480 },
   safetyMs: 3000
 };
 
@@ -117,7 +117,7 @@ const PREMIUM_MOTION_CONFIG = {
             y: 0,
             filter: 'blur(0px)',
             duration: cfg.reveal.duration,
-            stagger: 0.1,
+            stagger: 0.08,
             ease: cfg.ease.soft,
             onComplete: function () { batch.forEach(show); }
           });

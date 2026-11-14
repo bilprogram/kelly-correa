@@ -17,33 +17,33 @@ const MOTION_CONFIG = {
     linear: "none"
   },
 
-  // Timings da Hero (Primeira Dobra mantida)
+  // Timings da Hero (Primeira Dobra mantida, calibrada -12% duracao e -20% stagger)
   hero: {
     videoScale: 2.8,
     videoFade: 1.2,
     gradientFade: 1.4,
-    eyebrowLine: 0.9,
-    eyebrowText: 0.9,
-    headlineLine: 1.4,
-    headlineStagger: 0.16,
-    emFocus: 1.5,
-    supportText: 1.1,
-    ctaClip: 0.9,
+    eyebrowLine: 0.8,
+    eyebrowText: 0.8,
+    headlineLine: 1.25,
+    headlineStagger: 0.13,
+    emFocus: 1.3,
+    supportText: 0.95,
+    ctaClip: 0.8,
     ctaLabels: 0.5,
     statusBadge: 0.6,
-    secondaryLink: 0.8,
-    secondaryUnderline: 0.8,
-    bottomDividers: 1.2,
-    bottomItems: 0.8,
-    sealEntrance: 1.0,
+    secondaryLink: 0.7,
+    secondaryUnderline: 0.7,
+    bottomDividers: 1.05,
+    bottomItems: 0.7,
+    sealEntrance: 0.88,
     sealRotation: 22.0
   },
 
   // Efeito Magnético do Botão Primário e CTA da Segunda Dobra
   magnetic: {
     proximityRadius: 80,
-    maxTranslation: 8,
-    quickToDuration: 0.5
+    maxTranslation: 6.8,
+    quickToDuration: 0.45
   },
 
   // Transição de Cortina da Hero (Step 3)
@@ -58,29 +58,29 @@ const MOTION_CONFIG = {
   // Marquee como Ponte sobre o Vídeo (Step 2 & 4)
   marquee: {
     baseSpeedPxPerSec: 60,
-    maxVelocityScale: 3.0,
+    maxVelocityScale: 2.5,
     velocityScaleDuration: 0.3,
     velocityResetDuration: 0.8
   },
 
-  // SEGUNDA DOBRA RECONSTRUÍDA (Step 6)
+  // SEGUNDA DOBRA RECONSTRUÍDA (Step 6, calibrada -12% duracao e -20% stagger)
   secondFold: {
     manifestoStart: "top 80%",
     manifestoEnd: "bottom 45%",
-    photoClipDuration: 1.6,
-    photoScaleDuration: 1.8,
+    photoClipDuration: 1.4,
+    photoScaleDuration: 1.6,
     photoInitialScale: 1.12,
-    photoParallaxY: 4, // yPercent -4 a 4
-    eyebrowHeadlineDuration: 1.2,
-    headlineStagger: 0.12,
-    emFocusDuration: 1.4,
-    leadDuration: 1.1,
-    dividerDuration: 1.0,
-    dividerStagger: 0.1,
-    microTextDuration: 0.8,
-    microTextStagger: 0.12,
-    quoteDuration: 0.9,
-    ctaDuration: 0.8,
+    photoParallaxY: 3.4, // yPercent -3.4 a 3.4 (calibrado -15%)
+    eyebrowHeadlineDuration: 1.05,
+    headlineStagger: 0.10,
+    emFocusDuration: 1.2,
+    leadDuration: 0.95,
+    dividerDuration: 0.88,
+    dividerStagger: 0.08,
+    microTextDuration: 0.7,
+    microTextStagger: 0.10,
+    quoteDuration: 0.8,
+    ctaDuration: 0.7,
     reducedMotionFade: 0.4,
     safetyTimeoutMs: 3000 // Fallback contra H2 invisível (Bug #2)
   }
@@ -238,6 +238,8 @@ const MOTION_CONFIG = {
     // ========================================================================
     mm.add('(prefers-reduced-motion: no-preference)', () => {
       let heroEntranceDone = false;
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      const isDesktop = !isMobile;
 
       // ----------------------------------------------------------------------
       // 1. TIMELINE DE ENTRADA DA HERO (Preservada estritamente)
@@ -257,16 +259,16 @@ const MOTION_CONFIG = {
       tlHero.fromTo('.hero__video', { scale: 1.12 }, { scale: 1, duration: cfg.hero.videoScale, ease: "power3.out" }, 0);
       tlHero.fromTo('.hero__gradient', { opacity: 0 }, { opacity: 1, duration: cfg.hero.gradientFade }, 0.2);
       tlHero.fromTo('.hero__eyebrow-line', { scaleX: 0, transformOrigin: 'left center' }, { scaleX: 1, duration: cfg.hero.eyebrowLine }, 0.35);
-      tlHero.fromTo('.hero__eyebrow', { opacity: 0, x: -12 }, { opacity: 1, x: 0, duration: cfg.hero.eyebrowText }, 0.35);
+      tlHero.fromTo('.hero__eyebrow', { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: cfg.hero.eyebrowText }, 0.35);
       tlHero.fromTo('.hero__headline .line-inner', { yPercent: 115, rotate: 3, skewY: 4, transformOrigin: 'left bottom' }, { yPercent: 0, rotate: 0, skewY: 0, duration: cfg.hero.headlineLine, stagger: cfg.hero.headlineStagger }, 0.55);
-      tlHero.fromTo('.hero__em', { opacity: 0, filter: 'blur(14px)', letterSpacing: '0.06em', y: 8 }, { opacity: 1, filter: 'blur(0px)', letterSpacing: '-0.025em', y: 0, duration: cfg.hero.emFocus, ease: "power3.out" }, 1.05);
-      tlHero.fromTo('.hero__support', { opacity: 0, y: 24, filter: 'blur(6px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: cfg.hero.supportText }, 1.2);
+      tlHero.fromTo('.hero__em', { opacity: 0, filter: isMobile ? 'blur(5px)' : 'blur(8px)', letterSpacing: '0.06em', y: 7 }, { opacity: 1, filter: 'blur(0px)', letterSpacing: '-0.025em', y: 0, duration: cfg.hero.emFocus, ease: "power3.out" }, 1.05);
+      tlHero.fromTo('.hero__support', { opacity: 0, y: isMobile ? 18 : 21, filter: isMobile ? 'blur(3px)' : 'blur(4px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: cfg.hero.supportText }, 1.2);
       tlHero.fromTo('.hero__btn-primary', { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: cfg.hero.ctaClip }, 1.4);
       tlHero.fromTo(['.hero__btn-primary .hero__btn-label', '.hero__btn-primary .hero__btn-icon'], { opacity: 0 }, { opacity: 1, duration: cfg.hero.ctaLabels }, 1.7);
-      tlHero.fromTo('.hero__status-badge', { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: cfg.hero.statusBadge }, 1.6);
-      tlHero.fromTo('.hero__link-secondary', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: cfg.hero.secondaryLink }, 1.5);
+      tlHero.fromTo('.hero__status-badge', { opacity: 0, y: 5 }, { opacity: 1, y: 0, duration: cfg.hero.statusBadge }, 1.6);
+      tlHero.fromTo('.hero__link-secondary', { opacity: 0, y: isMobile ? 12 : 14 }, { opacity: 1, y: 0, duration: cfg.hero.secondaryLink }, 1.5);
       tlHero.fromTo('.hero__link-underline', { scaleX: 0, transformOrigin: 'left center' }, { scaleX: 1, duration: cfg.hero.secondaryUnderline }, 1.7);
-      tlHero.fromTo('.hero__bottom-item', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: cfg.hero.bottomItems }, 1.7);
+      tlHero.fromTo('.hero__bottom-item', { opacity: 0, y: isMobile ? 8 : 9 }, { opacity: 1, y: 0, duration: cfg.hero.bottomItems }, 1.7);
       tlHero.fromTo('.hero__seal', { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: cfg.hero.sealEntrance, ease: 'back.out(1.2)' }, 1.9);
 
       // 1.1 Rotação e Interações do Selo Hero (Change 1)
@@ -636,7 +638,7 @@ const MOTION_CONFIG = {
         const sobreTl = gsap.timeline({
           scrollTrigger: {
             trigger: textCol,
-            start: "top 75%",
+            start: isDesktop ? "top 80%" : "top 75%",
             once: true,
             onStart: () => {
               gsap.set(sobreAnimatedEls, { willChange: 'transform,opacity,filter' });
@@ -648,7 +650,7 @@ const MOTION_CONFIG = {
           }
         });
 
-        // Eyebrow e Headline (Line-Mask reveal com yPercent 110 -> 0 em 1.2s)
+        // Eyebrow e Headline (Line-Mask reveal com yPercent 110 -> 0 em 1.05s)
         sobreTl.fromTo(['.sobre__eyebrow', '.sobre__headline .line-inner'], {
           yPercent: 110
         }, {
@@ -658,10 +660,10 @@ const MOTION_CONFIG = {
           ease: "expo.out"
         }, 0);
 
-        // Palavra em itálico "vivência familiar" entra em foco com blur
+        // Palavra em itálico "vivência familiar" entra em foco com blur calibrado (8px desktop / 5px mobile)
         sobreTl.fromTo('.sobre__em', {
           opacity: 0,
-          filter: 'blur(12px)'
+          filter: isMobile ? 'blur(5px)' : 'blur(8px)'
         }, {
           opacity: 1,
           filter: 'blur(0px)',
@@ -669,11 +671,11 @@ const MOTION_CONFIG = {
           ease: "power3.out"
         }, 0.3);
 
-        // Lead (y: 24 -> 0, blur: 6px -> 0, opacity: 0 -> 1 em 1.1s)
+        // Lead (y: 21/18 -> 0, blur: 4px/3px -> 0, opacity: 0 -> 1 em 0.95s)
         sobreTl.fromTo('.sobre__lead', {
           opacity: 0,
-          y: 24,
-          filter: 'blur(6px)'
+          y: isMobile ? 18 : 21,
+          filter: isMobile ? 'blur(3px)' : 'blur(4px)'
         }, {
           opacity: 1,
           y: 0,
@@ -682,7 +684,7 @@ const MOTION_CONFIG = {
           ease: "expo.out"
         }, 0.4);
 
-        // Micro Itens (Divisores scaleX: 0 -> 1 e Textos y: 16 -> 0)
+        // Micro Itens (Divisores scaleX: 0 -> 1 e Textos y: 14/12 -> 0)
         sobreTl.fromTo('.sobre__micro-divider', {
           scaleX: 0
         }, {
@@ -694,7 +696,7 @@ const MOTION_CONFIG = {
 
         sobreTl.fromTo('.sobre__micro-content', {
           opacity: 0,
-          y: 16
+          y: isMobile ? 12 : 14
         }, {
           opacity: 1,
           y: 0,
@@ -706,7 +708,7 @@ const MOTION_CONFIG = {
         // Quote (Fade up e quote mark scale: 0.8 -> 1)
         sobreTl.fromTo('.sobre__quote', {
           opacity: 0,
-          y: 20
+          y: isMobile ? 15 : 17
         }, {
           opacity: 1,
           y: 0,
@@ -725,7 +727,7 @@ const MOTION_CONFIG = {
         // CTA Underline e Arrow
         sobreTl.fromTo('.sobre__cta-link', {
           opacity: 0,
-          y: 12
+          y: isMobile ? 9 : 10
         }, {
           opacity: 1,
           y: 0,

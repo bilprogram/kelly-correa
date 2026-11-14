@@ -13,20 +13,20 @@ const FOOTER_MOTION_CONFIG = {
     expoOut: "power3.out"
   },
   timings: {
-    eyebrowDur: 0.9,
-    h2Dur: 1.2,
-    h2Stagger: 0.12,
-    emFocusDur: 1.4,
-    leadDur: 1.1,
-    buttonCurtainDur: 1.1,
-    footerCascadeDur: 1.0,
-    footerStagger: 0.08,
+    eyebrowDur: 0.8,
+    h2Dur: 1.05,
+    h2Stagger: 0.10,
+    emFocusDur: 1.2,
+    leadDur: 0.95,
+    buttonCurtainDur: 0.95,
+    footerCascadeDur: 0.88,
+    footerStagger: 0.06,
     symbolFloatDur: 8.0,
     safetyTimeout: 3000
   },
   magnetic: {
-    pullX: 0.22,
-    pullY: 0.30
+    pullX: 0.18,
+    pullY: 0.25
   }
 };
 
@@ -41,6 +41,9 @@ const FOOTER_MOTION_CONFIG = {
     const cfg = FOOTER_MOTION_CONFIG;
     const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const isDesktop = !isMobile;
 
     // Safety Fallback: força visibilidade se ScrollTrigger falhar ou demorar mais de 3s
     let ctaAnimated = false;
@@ -118,43 +121,43 @@ const FOOTER_MOTION_CONFIG = {
     // 2. FAIXA DE CTA FINAL (.chamada-final) — MOTION & REVEALS
     // =========================================================================
     if (ctaSection) {
-      // Blobs e Marca d'água: Paralaxe lenta no scroll
+      // Blobs e Marca d'água: Paralaxe lenta no scroll (calibrado -15% yPercent, -25% scrub)
       if (typeof ScrollTrigger !== 'undefined') {
         gsap.to('.chamada-final__blob--navy', {
-          yPercent: 8,
+          yPercent: 6.8,
           ease: 'none',
           scrollTrigger: {
             trigger: ctaSection,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: 1
+            scrub: 0.75
           }
         });
 
         gsap.to('.chamada-final__blob--sage', {
-          yPercent: -8,
+          yPercent: -6.8,
           ease: 'none',
           scrollTrigger: {
             trigger: ctaSection,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: 1
+            scrub: 0.75
           }
         });
 
         gsap.to('.chamada-final__watermark', {
-          yPercent: 12,
+          yPercent: 10,
           ease: 'none',
           scrollTrigger: {
             trigger: ctaSection,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: 1.5
+            scrub: 1.1
           }
         });
       }
 
-      // Timeline de Entrada: Dispara uma vez em 'top 75%'
+      // Timeline de Entrada: Dispara uma vez em 'top 80%' (desktop)
       const ctaElements = [
         '.chamada-final__eyebrow-line',
         '.chamada-final__eyebrow',
@@ -167,7 +170,7 @@ const FOOTER_MOTION_CONFIG = {
       const ctaTl = gsap.timeline({
         scrollTrigger: {
           trigger: ctaSection,
-          start: 'top 75%',
+          start: isDesktop ? 'top 80%' : 'top 75%',
           once: true,
           onStart: () => {
             gsap.set(ctaElements, { willChange: 'transform,opacity,filter,clip-path' });
@@ -179,14 +182,14 @@ const FOOTER_MOTION_CONFIG = {
         }
       });
 
-      // Eyebrow line scaleX 0 -> 1 e texto fade (x -12 -> 0)
+      // Eyebrow line scaleX 0 -> 1 e texto fade (x -10 -> 0)
       ctaTl.fromTo('.chamada-final__eyebrow-line', 
         { scaleX: 0, transformOrigin: 'left center' }, 
         { scaleX: 1, duration: cfg.timings.eyebrowDur, ease: cfg.easings.soft }, 
         0
       );
       ctaTl.fromTo('.chamada-final__eyebrow', 
-        { opacity: 0, x: -12 }, 
+        { opacity: 0, x: -10 }, 
         { opacity: 1, x: 0, duration: cfg.timings.eyebrowDur, ease: cfg.easings.soft }, 
         0.05
       );
@@ -198,16 +201,16 @@ const FOOTER_MOTION_CONFIG = {
         0.15
       );
 
-      // Palavra em itálico com foco suave (blur 12px -> 0, opacity 0 -> 1)
+      // Palavra em itálico com foco suave (blur 8px / 5px -> 0, opacity 0 -> 1)
       ctaTl.fromTo('.chamada-final__em', 
-        { opacity: 0, filter: 'blur(12px)' }, 
+        { opacity: 0, filter: isMobile ? 'blur(5px)' : 'blur(8px)' }, 
         { opacity: 1, filter: 'blur(0px)', duration: cfg.timings.emFocusDur, ease: 'power2.out' }, 
         0.35
       );
 
-      // Lead textual fade up (y 24 -> 0, blur 6px -> 0)
+      // Lead textual fade up (y 21/18 -> 0, blur 4px/3px -> 0)
       ctaTl.fromTo('.chamada-final__lead', 
-        { opacity: 0, y: 24, filter: 'blur(6px)' }, 
+        { opacity: 0, y: isMobile ? 18 : 21, filter: isMobile ? 'blur(3px)' : 'blur(4px)' }, 
         { opacity: 1, y: 0, filter: 'blur(0px)', duration: cfg.timings.leadDur, ease: cfg.easings.soft }, 
         0.45
       );
@@ -273,14 +276,14 @@ const FOOTER_MOTION_CONFIG = {
 
       footerTl.fromTo('.rodape__divider-top',
         { scaleX: 0, transformOrigin: 'left center' },
-        { scaleX: 1, duration: 1.2, ease: cfg.easings.soft },
+        { scaleX: 1, duration: 1.05, ease: cfg.easings.soft },
         0
       );
 
-      // Cascata das 4 colunas (y 24 -> 0, blur 6px -> 0, stagger 0.08)
+      // Cascata das 4 colunas (y 21/18 -> 0, blur 4px/3px -> 0, stagger 0.06)
       const footerCols = footerSection.querySelectorAll('.rodape__col-brand, .rodape__col');
       footerTl.fromTo(footerCols,
-        { opacity: 0, y: 24, filter: 'blur(6px)' },
+        { opacity: 0, y: isMobile ? 18 : 21, filter: isMobile ? 'blur(3px)' : 'blur(4px)' },
         { 
           opacity: 1, 
           y: 0, 
@@ -294,8 +297,8 @@ const FOOTER_MOTION_CONFIG = {
       );
 
       footerTl.fromTo('.rodape__base',
-        { opacity: 0, y: 16 },
-        { opacity: 1, y: 0, duration: 0.8, ease: cfg.easings.soft, clearProps: 'transform' },
+        { opacity: 0, y: isMobile ? 12 : 14 },
+        { opacity: 1, y: 0, duration: 0.7, ease: cfg.easings.soft, clearProps: 'transform' },
         0.6
       );
 

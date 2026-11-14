@@ -1214,7 +1214,7 @@ p:last-child {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  transition: transform 0.6s var(--suave), box-shadow 0.5s var(--suave), background-color 0.4s var(--suave), color 0.4s;
+  transition: transform 0.5s var(--suave), box-shadow 0.45s var(--suave), background-color 0.35s var(--suave), color 0.35s;
 }
 
 /* Cortina de Preenchimento Suave (Inspiração Hero / Design System) */
@@ -1228,7 +1228,7 @@ p:last-child {
   z-index: -1;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.18);
-  transition: top 0.7s var(--suave);
+  transition: top 0.6s var(--suave);
   pointer-events: none;
 }
 
@@ -1252,7 +1252,7 @@ p:last-child {
     transparent
   );
   transform: skewX(-20deg);
-  transition: left 0.75s var(--suave);
+  transition: left 0.65s var(--suave);
   pointer-events: none;
   z-index: 1;
 }
@@ -1263,7 +1263,7 @@ p:last-child {
 
 /* Micro-rotação e deslocamento do ícone SVG no hover */
 .btn svg {
-  transition: transform 0.6s var(--suave);
+  transition: transform 0.5s var(--suave);
 }
 .btn:hover svg {
   transform: translateX(3px) rotate(-15deg);
@@ -1314,7 +1314,7 @@ p:last-child {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  transition: background-color var(--transition-fast), transform 0.6s var(--suave), box-shadow 0.6s var(--suave);
+  transition: background-color var(--transition-fast), transform 0.5s var(--suave), box-shadow 0.5s var(--suave);
 }
 .nav-cta::before {
   content: "";
@@ -1326,7 +1326,7 @@ p:last-child {
   z-index: -1;
   border-radius: 50%;
   background: var(--color-blue-dark);
-  transition: top 0.7s var(--suave);
+  transition: top 0.6s var(--suave);
   pointer-events: none;
 }
 .nav-cta:hover::before {
@@ -1341,7 +1341,7 @@ p:last-child {
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   transform: skewX(-20deg);
-  transition: left 0.75s var(--suave);
+  transition: left 0.65s var(--suave);
   pointer-events: none;
   z-index: 1;
 }
@@ -1353,7 +1353,7 @@ p:last-child {
   box-shadow: 0 10px 24px rgba(25, 55, 101, 0.3), 0 0 20px rgba(25, 55, 101, 0.15);
 }
 .nav-cta svg {
-  transition: transform 0.6s var(--suave);
+  transition: transform 0.5s var(--suave);
 }
 .nav-cta:hover svg {
   transform: translateX(3px) rotate(-15deg);
@@ -1374,7 +1374,7 @@ p:last-child {
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow-floating);
-  transition: transform 0.6s var(--suave), box-shadow 0.6s var(--suave), background-color 0.4s var(--suave);
+  transition: transform 0.5s var(--suave), box-shadow 0.5s var(--suave), background-color 0.35s var(--suave);
   text-decoration: none;
   overflow: hidden;
   isolation: isolate;
@@ -1388,7 +1388,7 @@ p:last-child {
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
   transform: skewX(-20deg);
-  transition: left 0.8s var(--suave);
+  transition: left 0.7s var(--suave);
   pointer-events: none;
 }
 .whatsapp-float:hover::after {
@@ -2241,7 +2241,7 @@ p:last-child {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.5s var(--ease-soft), background-color 0.4s var(--ease-soft), color 0.4s;
+  transition: transform 0.45s var(--ease-soft), background-color 0.35s var(--ease-soft), color 0.35s;
 }
 
 .servicos__card-num {
@@ -2249,7 +2249,7 @@ p:last-child {
   font-style: italic;
   font-size: 1.6rem;
   color: var(--color-sage-dark, #72928A);
-  transition: color 0.4s var(--ease-soft);
+  transition: color 0.35s var(--ease-soft);
 }
 
 .servicos__card-title {
@@ -2259,7 +2259,7 @@ p:last-child {
   letter-spacing: -0.015em;
   color: var(--color-blue-deep);
   margin: 0 0 16px 0;
-  transition: color 0.4s var(--ease-soft);
+  transition: color 0.35s var(--ease-soft);
 }
 
 .servicos__card-text {
@@ -2270,7 +2270,7 @@ p:last-child {
   color: rgba(8, 18, 40, 0.80);
   margin: 0 0 clamp(24px, 3vh, 36px) 0;
   flex-grow: 1;
-  transition: color 0.4s var(--ease-soft);
+  transition: color 0.35s var(--ease-soft);
 }
 
 .servicos__card-action {
@@ -2288,7 +2288,7 @@ p:last-child {
   text-decoration: none;
   position: relative;
   padding: 4px 0;
-  transition: color 0.4s var(--ease-soft);
+  transition: color 0.35s var(--ease-soft);
 }
 
 .servicos__card-arrow {
@@ -2306,7 +2306,7 @@ p:last-child {
   background-color: var(--color-blue-deep);
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 0.4s var(--ease-soft), background-color 0.4s;
+  transition: transform 0.35s var(--ease-soft), background-color 0.35s;
 }
 
 /* STEP 6: Card Hover & Focus-within States (Desktop Only) */
@@ -2317,7 +2317,7 @@ p:last-child {
     inset: 0;
     background-color: var(--hero-navy-dark, #081228);
     transform: translateY(100%);
-    transition: transform 0.8s var(--ease-soft);
+    transition: transform 0.7s var(--ease-soft);
     border-radius: 28px;
     z-index: 1;
     pointer-events: none;
@@ -2657,9 +2657,9 @@ p:last-child {
   flex-direction: column;
   box-shadow: 0 30px 60px -30px rgba(8, 18, 40, 0.12);
   overflow: hidden;
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), 
-              box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1), 
-              border-color 0.4s ease;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), 
+              box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1), 
+              border-color 0.35s ease;
   will-change: transform, clip-path;
 }
 
@@ -2670,7 +2670,7 @@ p:last-child {
   inset: 0;
   background-color: var(--color-blue-deep, #081228);
   transform: translateY(101%);
-  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 0;
   border-radius: 28px;
 }
@@ -3737,9 +3737,9 @@ p:last-child {
   overflow: hidden;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), 
-              border-color 0.4s ease, 
-              box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), 
+              border-color 0.35s ease, 
+              box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform, clip-path;
 }
 
@@ -3750,7 +3750,7 @@ p:last-child {
   inset: 0;
   background-color: var(--color-ivory, #F7F4EE);
   transform: translateY(101%);
-  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 0;
   border-radius: 28px;
 }
@@ -4163,7 +4163,7 @@ p:last-child {
   inset: 0;
   background-color: rgba(244, 239, 232, 0.70);
   transform: translateY(101%);
-  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 0;
   pointer-events: none;
   border-radius: 12px;
@@ -5355,7 +5355,7 @@ p:last-child {
   box-shadow: 0 16px 36px -10px rgba(18, 40, 73, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.25);
   cursor: pointer;
   user-select: none;
-  transition: transform 0.6s var(--suave), box-shadow 0.6s var(--suave), background-color 0.4s var(--suave);
+  transition: transform 0.5s var(--suave), box-shadow 0.5s var(--suave), background-color 0.35s var(--suave);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -5366,7 +5366,7 @@ p:last-child {
   width: 100%;
   height: 100%;
   animation: girarSelo 24s linear infinite;
-  transition: transform 0.6s var(--suave);
+  transition: transform 0.5s var(--suave);
 }
 
 .selo-giro text {
@@ -5386,14 +5386,14 @@ p:last-child {
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.2);
   color: var(--color-white);
-  transition: transform 0.6s var(--suave), background-color 0.4s;
+  transition: transform 0.5s var(--suave), background-color 0.35s;
 }
 
 .selo-giro__centro svg {
   width: 22px;
   height: 22px;
   stroke-width: 1.8;
-  transition: transform 0.6s var(--suave);
+  transition: transform 0.5s var(--suave);
 }
 
 .selo-giro:hover {
@@ -5438,7 +5438,7 @@ p:last-child {
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
-  transition: transform 0.6s var(--suave), box-shadow 0.5s var(--suave), color 0.4s;
+  transition: transform 0.5s var(--suave), box-shadow 0.45s var(--suave), color 0.35s;
 }
 
 .botao::before {
@@ -5451,7 +5451,7 @@ p:last-child {
   z-index: -1;
   border-radius: 50%;
   background: var(--fundo-ativo);
-  transition: top 0.7s var(--suave);
+  transition: top 0.6s var(--suave);
 }
 
 .botao:hover::before,
@@ -5477,13 +5477,13 @@ p:last-child {
   background: var(--cor);
   color: var(--fundo);
   overflow: hidden;
-  transition: background-color 0.4s, color 0.4s;
+  transition: background-color 0.35s, color 0.35s;
 }
 
 .botao__icone svg {
   width: 18px;
   height: 18px;
-  transition: transform 0.6s var(--suave);
+  transition: transform 0.5s var(--suave);
 }
 
 .botao:hover .botao__icone svg {

@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cursor && ponto && anel) {
       // Constantes de Decay do Anel (calibrado para ~0.37 efetivo a 60fps / 16.6ms)
       const RING_DECAY = 0.001;
-      const RING_SPEED = 4.0; // factor = 1 - Math.pow(RING_DECAY, dt * RING_SPEED)
+      const RING_SPEED = 5.0; // factor = 1 - Math.pow(RING_DECAY, dt * RING_SPEED)
 
       let mx = -100, my = -100;
       let ax = -100, ay = -100;
@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!r) r = el.getBoundingClientRect();
         const dx = e.clientX - (r.left + r.width / 2);
         const dy = e.clientY - (r.top + r.height / 2);
-        el.style.transform = `translate(${(dx * 0.22).toFixed(1)}px, ${(dy * 0.30).toFixed(1)}px)`;
+        el.style.transform = `translate(${(dx * 0.18).toFixed(1)}px, ${(dy * 0.25).toFixed(1)}px)`;
       });
 
       el.addEventListener('pointerleave', () => {

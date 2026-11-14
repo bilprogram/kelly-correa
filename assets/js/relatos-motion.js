@@ -14,18 +14,18 @@ const RELATOS_MOTION_CONFIG = {
     expoOut: "expo.out"
   },
   timings: {
-    eyebrowLine: 0.9,
-    eyebrowText: 0.9,
-    headingMask: 1.2,
-    headingStagger: 0.12,
-    italicFocus: 1.4,
-    leadFade: 1.1,
-    quoteMarkFade: 1.2,
-    cardCurtain: 1.3,
-    cardStagger: 0.14,
-    cardContentFade: 0.9,
-    dividerDraw: 1.2,
-    ethicalFade: 1.0,
+    eyebrowLine: 0.8,
+    eyebrowText: 0.8,
+    headingMask: 1.05,
+    headingStagger: 0.10,
+    italicFocus: 1.2,
+    leadFade: 0.95,
+    quoteMarkFade: 1.05,
+    cardCurtain: 1.15,
+    cardStagger: 0.11,
+    cardContentFade: 0.8,
+    dividerDraw: 1.05,
+    ethicalFade: 0.88,
     safetyTimeoutMs: 3000
   }
 };
@@ -138,11 +138,14 @@ const RELATOS_MOTION_CONFIG = {
       ethicalNote
     ];
 
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const isDesktop = !isMobile;
+
     const headingTl = gsap.timeline({
       scrollTrigger: {
         id: 'relatos-heading',
         trigger: relatosSection,
-        start: 'top 75%',
+        start: isDesktop ? 'top 80%' : 'top 75%',
         once: true,
         onStart: () => { 
           relatosAnimated = true; 
@@ -160,7 +163,7 @@ const RELATOS_MOTION_CONFIG = {
         { scaleX: 1, duration: cfg.timings.eyebrowLine, ease: cfg.easings.mask }
       )
       .fromTo('.relatos__eyebrow', 
-        { opacity: 0, x: -12 }, 
+        { opacity: 0, x: -10 }, 
         { opacity: 1, x: 0, duration: cfg.timings.eyebrowText, ease: cfg.easings.soft }, 
         '-=0.7'
       )
@@ -170,12 +173,12 @@ const RELATOS_MOTION_CONFIG = {
         '-=0.6'
       )
       .fromTo('.relatos__em', 
-        { filter: 'blur(12px)', opacity: 0 }, 
+        { filter: isMobile ? 'blur(5px)' : 'blur(8px)', opacity: 0 }, 
         { filter: 'blur(0px)', opacity: 1, duration: cfg.timings.italicFocus, ease: cfg.easings.soft }, 
         '-=1.0'
       )
       .fromTo('.relatos__lead', 
-        { y: 24, filter: 'blur(6px)', opacity: 0 }, 
+        { y: isMobile ? 18 : 21, filter: isMobile ? 'blur(3px)' : 'blur(4px)', opacity: 0 }, 
         { y: 0, filter: 'blur(0px)', opacity: 1, duration: cfg.timings.leadFade, ease: cfg.easings.soft }, 
         '-=1.1'
       )
@@ -191,19 +194,19 @@ const RELATOS_MOTION_CONFIG = {
       );
 
     // =========================================================================
-    // STEP 3 & 4 — BACKGROUND BLOBS & GIANT QUOTATION MARK PARALLAX
+    // STEP 3 & 4 — BACKGROUND BLOBS & GIANT QUOTATION MARK PARALLAX (Calibrado -15% yPercent, -25% scrub)
     // =========================================================================
     blobs.forEach((blob, idx) => {
       gsap.fromTo(blob, 
-        { yPercent: idx % 2 === 0 ? -8 : 8 }, 
+        { yPercent: idx % 2 === 0 ? -6.8 : 6.8 }, 
         {
-          yPercent: idx % 2 === 0 ? 8 : -8,
+          yPercent: idx % 2 === 0 ? 6.8 : -6.8,
           ease: 'none',
           scrollTrigger: {
             trigger: relatosSection,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: 1
+            scrub: 0.75
           }
         }
       );
@@ -227,13 +230,13 @@ const RELATOS_MOTION_CONFIG = {
       gsap.fromTo(quoteMark,
         { yPercent: 0 },
         {
-          yPercent: -12,
+          yPercent: -10,
           ease: 'none',
           scrollTrigger: {
             trigger: featuredQuote,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: 1
+            scrub: 0.75
           }
         }
       );
@@ -269,11 +272,11 @@ const RELATOS_MOTION_CONFIG = {
 
         if (featuredAuthor) {
           gsap.fromTo(featuredAuthor,
-            { opacity: 0, y: 16 },
+            { opacity: 0, y: isMobile ? 12 : 14 },
             {
               opacity: 1,
               y: 0,
-              duration: 0.9,
+              duration: 0.8,
               ease: cfg.easings.soft,
               scrollTrigger: {
                 trigger: featuredAuthor,
@@ -308,8 +311,8 @@ const RELATOS_MOTION_CONFIG = {
                 { clipPath: 'inset(0 0 0% 0 round 28px)', duration: cfg.timings.cardCurtain, ease: cfg.easings.mask, delay: idx * cfg.timings.cardStagger }
               )
               .fromTo(cardContent, 
-                { y: 20, filter: 'blur(6px)', opacity: 0 }, 
-                { y: 0, filter: 'blur(0px)', opacity: 1, duration: cfg.timings.cardContentFade, stagger: 0.08, ease: cfg.easings.soft }, 
+                { y: isMobile ? 15 : 17, filter: isMobile ? 'blur(3px)' : 'blur(4px)', opacity: 0 }, 
+                { y: 0, filter: 'blur(0px)', opacity: 1, duration: cfg.timings.cardContentFade, stagger: 0.06, ease: cfg.easings.soft }, 
                 '-=0.8'
               );
             });
