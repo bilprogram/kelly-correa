@@ -14,9 +14,7 @@ Website profissional de Kelly Corrêa, neuropsicopedagoga clínica em São José
 ├── orientacao-parental-inclusao-escolar.html # Serviço: Orientação e Inclusão
 ├── politica-de-privacidade.html              # Política de Privacidade
 ├── 404.html                                  # Página de Erro 404
-├── acompanhamento-neuropsicopedagogico/      # Rota clean-URL (index.html)
-├── avaliacao-neuropsicopedagogica/           # Rota clean-URL (index.html)
-├── orientacao-parental-inclusao-escolar/     # Rota clean-URL (index.html)
+├── _headers                                  # Cabeçalhos Cloudflare (noindex *.pages.dev, cache)
 ├── robots.txt                                # Diretivas para rastreadores
 ├── sitemap.xml                               # Mapa do site para motores de busca
 ├── site.webmanifest                          # Configuração PWA e ícones
@@ -35,12 +33,13 @@ Website profissional de Kelly Corrêa, neuropsicopedagoga clínica em São José
 
 O site é estático (HTML5, CSS3 e JavaScript nativo com GSAP/ScrollTrigger via CDN). Não requer etapas de compilação ou dependências do Node.js.
 
-### Opção 1: Servidor Local via Python
+### Opção 1: Servidor Local com URLs limpas (igual ao Cloudflare Pages)
+Os links internos usam URLs limpas (`/avaliacao-neuropsicopedagogica`), como o Cloudflare Pages serve em produção.
 ```bash
 # Na raiz do projeto:
-python3 -m http.server 8000
+npx serve .
 ```
-Acesse em: `http://localhost:8000`
+Acesse em: `http://localhost:3000`
 
 ### Opção 2: VS Code Live Server / Extensões
 Abra a pasta no VS Code e clique em **Go Live** no canto inferior direito.
