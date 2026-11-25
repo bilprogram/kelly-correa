@@ -13,3 +13,14 @@ https://:version.:project.pages.dev/*
   Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
 /assets/videos/*
   Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+# Segurança básica para todas as páginas
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# Arquivos para robôs e IAs com cache curto
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
